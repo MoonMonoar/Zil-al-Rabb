@@ -18,8 +18,7 @@ public class Login extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
-
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.login_page_status_bar));
 
 
 
