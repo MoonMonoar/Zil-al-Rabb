@@ -4,6 +4,125 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/signup_background"
     tools:context=".Login.Registration">
 
+    <LinearLayout
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nestapha"
+            android:text="@string/let_s_join_us"
+            android:textColor="@color/white"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ubuntu"
+            android:text="@string/create_new_account"
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:textColor="@color/black"
+            android:fontFamily="@font/ubuntu"
+            android:padding="10dp"
+            android:hint="@string/full_name"
+            android:layout_marginTop="25dp"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:autofillHints="name"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:textColor="@color/black"
+            android:fontFamily="@font/ubuntu"
+            android:padding="10dp"
+            android:hint="@string/email_id"
+            android:layout_marginTop="25dp"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:autofillHints="name"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:textColor="@color/black"
+            android:fontFamily="@font/ubuntu"
+            android:padding="10dp"
+            android:hint="@string/phone_number"
+            android:layout_marginTop="25dp"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:autofillHints="phone"
+            android:inputType="phone" />
+
+        <Spinner
+            android:id="@+id/gender"
+            android:textColor="@color/black"
+            android:fontFamily="@font/ubuntu"
+            android:padding="10dp"
+            android:layout_marginTop="25dp"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+        <EditText
+            android:textColor="@color/black"
+            android:fontFamily="@font/ubuntu"
+            android:padding="10dp"
+            android:hint="@string/password"
+            android:layout_marginTop="25dp"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:autofillHints="password"
+            android:inputType="textPassword" />
+
+        <Button
+            android:layout_gravity="center"
+            android:paddingStart="80dp"
+            android:paddingEnd="80dp"
+            android:fontFamily="@font/ubuntu"
+            android:textColor="@color/black"
+            android:padding="10dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/create_account"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"/>
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:id="@+id/login"
+            android:layout_marginStart="5dp"
+            android:focusable="true"
+            android:clickable="true"
+            android:background="?android:attr/selectableItemBackground"
+            android:textStyle="bold"
+            android:padding="10dp"
+            android:textAlignment="center"
+            android:text="@string/login_instead"
+            android:textColor="@color/white_robust"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

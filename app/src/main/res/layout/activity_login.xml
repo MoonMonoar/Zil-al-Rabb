@@ -96,13 +96,19 @@
                 android:text="@string/new_user"
                 android:textColor="@color/white_robust"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                tools:ignore="RtlSymmetry" />
 
             <TextView
+                android:id="@+id/signup"
+                android:layout_marginStart="5dp"
+                android:focusable="true"
+                android:clickable="true"
+                android:background="?android:attr/selectableItemBackground"
                 android:textStyle="bold"
                 android:padding="10dp"
                 android:textAlignment="center"
-                android:text="Create An Account"
+                android:text="@string/create_an_account"
                 android:textColor="@color/white_robust"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
