@@ -4,4 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="white_robust">#FFFFFFFF</color>
     <color name="main">#149346</color>
+
+    <color name="login_page_status_bar">#c07c57</color>
 </resources>
