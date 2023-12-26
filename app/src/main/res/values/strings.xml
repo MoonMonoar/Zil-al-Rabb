@@ -11,6 +11,9 @@
     <string name="let_s_join_us">Let\'s join us!</string>
     <string name="full_name">Full name</string>
     <string name="email_id">Email ID</string>
+    <string name="invalid_name">Invalid name!</string>
+    <string name="invalid_email">Invalid email!</string>
+    <string name="invalid_password">Weak password!</string>
     <string name="phone_number">Phone number</string>
     <string name="have_account">Have account?</string>
     <string name="login">Login</string>
@@ -19,7 +22,18 @@
     <string name="back">Back</string>
     <string name="login_instead">Login instead</string>
     <string name="gender">Gender</string>
-
+    <string name="profanity_notice">System predicts your name is potentially against our community guidelines. Continue if you are using your original name, if done on purpose you account can get banned.</string>
+    <string name="profanity_warning">Profanity Warning</string>
+    <string name="i_understand">I understand</string>
+    <string name="invalid_phone">Invalid phone</string>
+    <string name="creating_account">Creating account…</string>
+    <string name="try_again">Something went wrong! Try again</string>
+    <string name="email_verification">Email verification</string>
+    <string name="enter_the_6_digit_verification_pin_we_just_sent_to_your_email_id">Enter the 6 digit verification pin we just sent to your email ID</string>
+    <string name="hashes">######</string>
+    <string name="sending_verification_pin">Sending verification pin…</string>
+    <string name="change_email">Change email</string>
+    <string name="invalid_pin">Invalid PIN!</string>
     <string-array name="genders">
         <item>Religious brother</item>
         <item>Religious sister</item>

@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/signup_background"
+    android:id="@+id/mainBody"
     tools:context=".Login.Registration">
 
     <LinearLayout
@@ -40,6 +41,7 @@
             android:textStyle="bold" />
 
         <EditText
+            android:id="@+id/fullName"
             android:drawableStart="@drawable/user"
             android:drawablePadding="10dp"
             android:textColorHint="@color/hint_color"
@@ -55,6 +57,7 @@
             android:inputType="textPersonName" />
 
         <EditText
+            android:id="@+id/email"
             android:drawableStart="@drawable/email"
             android:drawablePadding="10dp"
             android:textColorHint="@color/hint_color"
@@ -70,6 +73,7 @@
             android:inputType="textEmailAddress" />
 
         <EditText
+            android:id="@+id/phoneNumber"
             android:drawableStart="@drawable/phone"
             android:drawablePadding="10dp"
             android:textColorHint="@color/hint_color"
@@ -110,6 +114,7 @@
         </LinearLayout>
 
         <EditText
+            android:id="@+id/password"
             android:drawableStart="@drawable/password"
             android:drawablePadding="10dp"
             android:textColorHint="@color/hint_color"
@@ -125,6 +130,7 @@
             android:inputType="textPassword" />
 
         <Button
+            android:id="@+id/createProceed"
             android:layout_gravity="center"
             android:paddingStart="80dp"
             android:paddingEnd="80dp"

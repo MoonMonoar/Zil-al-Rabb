@@ -10,6 +10,7 @@ public class DBhandler extends SQLiteOpenHelper {
     //FLAGS -- DO NOT ALTER THESE VALUES
     public static String userLoggedInEntryName = "userLogged";
     public static String userProfileEntryName = "profile";
+    public static String userTokenEntryName = "userToken";
     public static String signalTrue = "true";
     public static String signalFalse = "false";
     //FLAGS
@@ -52,7 +53,7 @@ public class DBhandler extends SQLiteOpenHelper {
                 + ID_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + NET_CACHE_NAME_COL + " TEXT,"
                 + NET_CACHE_VAL_COL + " TEXT)";
-        db.execSQL(query1);
+        db.execSQL(query2);
     }
 
     //Table operations

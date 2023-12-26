@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/signup_background"
+    tools:context=".Login.Verification">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nestapha"
+            android:text="@string/email_verification"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/enter_the_6_digit_verification_pin_we_just_sent_to_your_email_id"
+            android:textAlignment="center"
+            android:textColor="@color/white_robust"
+            android:visibility="gone" />
+
+        <EditText
+            android:maxLength="6"
+            android:id="@+id/pinText"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:autofillHints="text"
+            android:background="@drawable/rounded_text_box"
+            android:fontFamily="@font/ubuntu"
+            android:gravity="center"
+            android:hint="@string/hashes"
+            android:inputType="number"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/hint_color"
+            android:textSize="25sp"
+            android:visibility="gone" />
+
+        <Button
+            android:visibility="gone"
+            android:id="@+id/changeEmail"
+            android:fontFamily="@font/ubuntu"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:textColor="@color/black"
+            android:text="@string/change_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/sending"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        tools:layout_editor_absoluteX="30dp">
+        <TextView
+            android:fontFamily="@font/ubuntu"
+            android:textAlignment="center"
+            android:textColor="@color/white_robust"
+            android:text="@string/sending_verification_pin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

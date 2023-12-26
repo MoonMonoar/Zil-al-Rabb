@@ -12,6 +12,8 @@ import android.view.View;
 import com.immo2n.halalife.Core.AppState;
 import com.immo2n.halalife.Custom.Global;
 import com.immo2n.halalife.Login.Login;
+import com.immo2n.halalife.Login.Registration;
+import com.immo2n.halalife.Login.Verification;
 
 public class Splash extends AppCompatActivity {
     private Global global;
@@ -31,8 +33,15 @@ public class Splash extends AppCompatActivity {
     private void checkRoute() {
         //Goto login
         if(appState.isUserLoggedIn()){
-            //Go home
-
+            //Go home or Verify
+            if(appState.getProfile().getEmail_verified().equals("Yes")){
+                //Go to home
+                global.toast("Home!");
+            }
+            else {
+                //Go verify
+                startActivity(new Intent(this, Verification.class));
+            }
         }
         else {
             //Go to login
