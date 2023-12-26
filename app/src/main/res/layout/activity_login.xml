@@ -39,28 +39,34 @@
             android:textStyle="bold" />
 
         <EditText
+            android:textColorHint="@color/hint_color"
             android:textColor="@color/black"
             android:fontFamily="@font/ubuntu"
             android:padding="10dp"
             android:hint="@string/email_id_or_phone"
             android:layout_marginTop="25dp"
-            android:background="@color/white"
+            android:background="@drawable/rounded_text_box"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:autofillHints="emailAddress"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:drawableStart="@drawable/user"
+            android:drawablePadding="10dp"/>
 
         <EditText
+            android:background="@drawable/rounded_text_box"
+            android:textColorHint="@color/hint_color"
             android:textColor="@color/black"
             android:fontFamily="@font/ubuntu"
             android:padding="10dp"
             android:hint="@string/password"
             android:layout_marginTop="25dp"
-            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:autofillHints="password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:drawableStart="@drawable/password"
+            android:drawablePadding="10dp"/>
 
         <Button
             android:paddingStart="80dp"
