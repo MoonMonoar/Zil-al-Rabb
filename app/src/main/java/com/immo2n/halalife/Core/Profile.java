@@ -4,6 +4,7 @@ public class Profile {
     String full_name;
     String phone;
     String email;
+    String photo;
     String username;
     String email_verified;
     String verified_badge;
@@ -90,5 +91,11 @@ public class Profile {
 
     public void setIp_address(String ip_address) {
         this.ip_address = ip_address;
+    }
+    public String getPhoto() {
+        return photo;
+    }
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }
