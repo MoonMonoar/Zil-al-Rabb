@@ -27,6 +27,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:fontFamily="@font/ubuntu"
             android:id="@+id/message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,6 +43,29 @@
             android:layout_gravity="center"
             android:layout_width="150dp"
             android:layout_height="150dp"/>
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:visibility="gone"
+            android:id="@+id/saveProgress"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            app:indicatorColor="@android:color/white"
+            app:trackColor="@android:color/darker_gray"
+            app:trackCornerRadius="20dp" />
+
+        <TextView
+            android:fontFamily="@font/ubuntu"
+            android:visibility="gone"
+            android:id="@+id/saveMessage"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/saving"
+            android:textAlignment="center"
+            android:textColor="@color/white_robust"/>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -116,6 +140,7 @@
     </LinearLayout>
 
     <TextView
+        android:fontFamily="@font/ubuntu"
         android:padding="10dp"
         android:id="@+id/textView2"
         android:layout_width="wrap_content"

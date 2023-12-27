@@ -8,8 +8,12 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 
 import androidx.activity.result.ActivityResult;
@@ -29,8 +33,12 @@ import androidx.core.content.FileProvider;
 import com.immo2n.halalife.Core.AppState;
 import com.immo2n.halalife.Core.Server;
 import com.immo2n.halalife.Custom.DBhandler;
+import com.immo2n.halalife.Custom.FileUtils;
 import com.immo2n.halalife.Custom.Global;
 import com.immo2n.halalife.Custom.ImageUtils;
+import com.immo2n.halalife.Custom.Net;
+import com.immo2n.halalife.DataObjects.FileCallback;
+import com.immo2n.halalife.DataObjects.HalalCheckObject;
 import com.immo2n.halalife.R;
 import com.immo2n.halalife.SubActivity.CropImage;
 import com.immo2n.halalife.databinding.ActivityProfilePictureBinding;
@@ -48,7 +56,7 @@ public class ProfilePicture extends AppCompatActivity {
     private Server server;
     private boolean haveCameraPermission = false;
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
-    private File tempFile;
+    private File tempFile, tempFileMain;
 
     @SuppressLint("QueryPermissionsNeeded")
     @Override
@@ -65,6 +73,7 @@ public class ProfilePicture extends AppCompatActivity {
         dBhandler = new DBhandler(this);
 
         tempFile = new File(this.getFilesDir(), "profile_picture.jpg");
+        tempFileMain = new File(this.getFilesDir(), "profile_picture_main.jpg");
 
         pickLauncher = registerForActivityResult(new ActivityResultContracts.TakePicture(), r-> {
             processImage();
@@ -100,8 +109,11 @@ public class ProfilePicture extends AppCompatActivity {
                 Intent data = result.getData();
                 if (null != data) {
                     if (null != data.getStringExtra("path")) {
-                        //Finally upload the file
+                        binding.picture.setImageBitmap(null);
                         binding.picture.setImageURI(Uri.fromFile(tempFile));
+                        FileUtils.compressImage(tempFileMain, tempFileMain);
+                        binding.saveProgress.setVisibility(View.VISIBLE);
+                        uploadFiles(tempFileMain, tempFile);
                     }
                 }
             }
@@ -111,7 +123,13 @@ public class ProfilePicture extends AppCompatActivity {
 
     private void processImage() {
         if(tempFile.length() > 0){
-            cropLauncher.launch(new Intent(this, CropImage.class).putExtra("path", tempFile.getAbsolutePath()));
+            try {
+                FileUtils.copyFile(tempFile, tempFileMain);
+                cropLauncher.launch(new Intent(this, CropImage.class).putExtra("path", tempFile.getAbsolutePath()));
+            }
+            catch (Exception e){
+                global.toast("Could not copy file!");
+            }
         }
         else {
             global.toast("Try again!");
@@ -158,4 +176,84 @@ public class ProfilePicture extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
+
+    private String face_file, dp_file;
+    private void uploadFiles(File face, File fullDp) {
+        if(null != face && null != fullDp){
+            server.uploadFilesIsolated(new File[]{
+                            face,
+                            fullDp},
+                    new String[]{
+                            Server.REASON_UPLOAD_FACE,
+                            Server.REASON_UPLOAD_DP
+                    },
+                    0,
+                    new Handler(Looper.getMainLooper()){
+                        private int faceProgress = 0;
+                        private int fullDpProgress = 0;
+                        @Override
+                        public void handleMessage(@NonNull Message msg) {
+                            super.handleMessage(msg);
+                            if (msg.what == Server.UPLOAD_ISOLATED_CODE) {
+                                FileCallback fileCallback = (FileCallback) msg.obj;
+                                if (fileCallback.getStatus().equals(FileCallback.FLAG_PROGRESS)) {
+                                    if (fileCallback.getReason().equals(Server.REASON_UPLOAD_FACE)) {
+                                        faceProgress = fileCallback.getProgress();
+                                        if (null == face_file || !face_file.equals(fileCallback.getFile())) {
+                                            face_file = fileCallback.getFile();
+                                        }
+                                    } else if (fileCallback.getReason().equals(Server.REASON_UPLOAD_DP)) {
+                                        fullDpProgress = fileCallback.getProgress();
+                                        if (null == dp_file || !dp_file.equals(fileCallback.getFile())) {
+                                            dp_file = fileCallback.getFile();
+                                        }
+                                    }
+                                    int totalProgress = (faceProgress + fullDpProgress) / 2;
+
+                                    binding.saveProgress.setProgress(totalProgress);
+
+                                    if (totalProgress == 100) {
+                                        if (null == dp_file || null == face_file) {
+                                            global.toast("Failed! Try later");
+                                        }
+                                        saveToProfile(dp_file, face_file);
+                                    }
+                                }
+                            }
+                        }
+                    }
+            );
+        }
+    }
+
+    private void saveToProfile(String dpFile, String faceFile) {
+        runOnUiThread(() -> binding.saveMessage.setText(global.getActivity().getText(R.string.saving)));
+        binding.saveProgress.setVisibility(View.GONE);
+        binding.saveMessage.setVisibility(View.VISIBLE);
+        new Net(new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                if(msg.what == 3){
+                    HalalCheckObject object = global.getGson().fromJson(msg.obj.toString(), HalalCheckObject.class);
+                    if(object.isSuccess()){
+                        if(object.isHalal()){
+                            runOnUiThread(() -> binding.saveMessage.setText(global.getActivity().getText(R.string.image_looks_good)));
+                            global.toast("DONE");
+                        }
+                        else {
+                            runOnUiThread(() -> binding.saveMessage.setText(global.getActivity().getText(R.string.image_is_not_halal_please_select_halal_image)));
+                            global.vibrate(500);
+                        }
+                    }
+                    else {
+                        global.toast("Please restart app!");
+                    }
+                }
+            }
+        }, global, false).post(Server.routeDPupdate, "token="+global.makeUrlSafe(
+                appState.getToken())+"&dp="+dpFile+"&face="+faceFile
+                , 3);
+    }
+
 }

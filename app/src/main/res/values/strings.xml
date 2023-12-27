@@ -48,4 +48,7 @@
     <string name="gallery">Gallery</string>
     <string name="done">Done</string>
     <string name="crop_photo">Crop Photo</string>
+    <string name="saving">Saving…</string>
+    <string name="image_is_not_halal_please_select_halal_image">Image is not halal! Please select halal image.</string>
+    <string name="image_looks_good">MashAllah, looks good!</string>
 </resources>

@@ -7,6 +7,8 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -204,5 +206,19 @@ public class Global {
             stringBuilder.append(randomChar);
         }
         return stringBuilder.toString();
+    }
+    public void runOnUI(Runnable runnable){
+        activity.runOnUiThread(runnable);
+    }
+    public void vibrate(long duration) {
+        Vibrator vibrator = (Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE);
+        if (vibrator != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                VibrationEffect vibrationEffect = VibrationEffect.createOneShot(duration, VibrationEffect.DEFAULT_AMPLITUDE);
+                vibrator.vibrate(vibrationEffect);
+            } else {
+                vibrator.vibrate(duration);
+            }
+        }
     }
 }
