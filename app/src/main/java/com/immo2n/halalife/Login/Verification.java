@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -71,7 +72,13 @@ public class Verification extends AppCompatActivity {
                                 if(response.isStatusOk()){
                                     //Sync profile auto
                                     appState.syncProfileAuto();
-                                    global.toast("Going home!!!");
+                                    if(appState.needProfilePicUpdate()){
+                                        startActivity(new Intent(Verification.this, ProfilePicture.class));
+                                        finish();
+                                    }
+                                    else {
+                                        global.toast("Go home");
+                                    }
                                 }
                                 else {
                                     global.toast("Try again!");

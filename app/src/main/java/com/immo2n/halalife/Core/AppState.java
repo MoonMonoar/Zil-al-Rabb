@@ -65,4 +65,11 @@ public class AppState {
             }
         }, global, false).post(Server.routeGetProfile, "token="+global.makeUrlSafe(getToken()), 3);
     }
+    public boolean needProfilePicUpdate(){
+        if(isUserLoggedIn()) {
+            Profile profile = getProfile();
+            return profile.getSkip_photo_update().equals("No") && profile.getPhoto().equals("DEFAULT");
+        }
+        return false;
+    }
 }

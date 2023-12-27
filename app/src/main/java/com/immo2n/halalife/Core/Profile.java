@@ -12,6 +12,15 @@ public class Profile {
     String time_joined;
     String last_login;
     String ip_address;
+    String skip_photo_update;
+
+    public String getSkip_photo_update() {
+        return skip_photo_update;
+    }
+
+    public void setSkip_photo_update(String skip_photo_update) {
+        this.skip_photo_update = skip_photo_update;
+    }
 
     public String getPhone() {
         return phone;

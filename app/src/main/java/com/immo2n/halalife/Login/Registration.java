@@ -93,8 +93,11 @@ public class Registration extends AppCompatActivity {
                                 global.toast("Home!");
                             }
                             else {
-                                //Go verify
-                                startActivity(new Intent(Registration.this, Verification.class));
+                                //Go verify -- finish all tho
+                                Intent intent = new Intent(Registration.this, Verification.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                finish();
                             }
                         }
                         else {

@@ -38,4 +38,14 @@
         <item>Religious brother</item>
         <item>Religious sister</item>
     </string-array>
+    <string name="title_activity_profile_picture">ProfilePicture</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="profile_picture">Profile picture</string>
+    <string name="mashallah_you_are_our_new_member_let_s_set_your_profile_picture">MashAllah, you are our new member! Let\'s set your profile picture</string>
+    <string name="we_only_support_halal_content_anything_against_the_laws_of_sariah_will_be_banned">We only support halal content, anything against the laws of sariah will be banned!</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="done">Done</string>
+    <string name="crop_photo">Crop Photo</string>
 </resources>

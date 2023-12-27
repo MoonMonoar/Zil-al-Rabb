@@ -12,6 +12,7 @@ import android.view.View;
 import com.immo2n.halalife.Core.AppState;
 import com.immo2n.halalife.Custom.Global;
 import com.immo2n.halalife.Login.Login;
+import com.immo2n.halalife.Login.ProfilePicture;
 import com.immo2n.halalife.Login.Registration;
 import com.immo2n.halalife.Login.Verification;
 
@@ -36,7 +37,12 @@ public class Splash extends AppCompatActivity {
             //Go home or Verify
             if(appState.getProfile().getEmail_verified().equals("Yes")){
                 //Go to home
-                global.toast("Home!");
+                if(appState.needProfilePicUpdate()){
+                    startActivity(new Intent(this, ProfilePicture.class));
+                }
+                else {
+                    global.toast("Home!");
+                }
             }
             else {
                 //Go verify
