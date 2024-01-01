@@ -5,6 +5,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="white_robust">#FFFFFFFF</color>
     <color name="main">#149346</color>
+    <color name="text_secondary">#737373</color>
 
     <color name="overlay">#9AFFFFFF</color>
     <color name="login_page_status_bar">#DD8F25</color>
@@ -14,4 +15,15 @@
     <color name="light_blue_A200">#FF40C4FF</color>
     <color name="light_blue_A400">#FF00B0FF</color>
     <color name="black_overlay">#66000000</color>
+
+    <color name="home_main">#2e2c5e</color>
+    <color name="muted">#A1A1A1</color>
+    <color name="border">#f1f1f1</color>
+
+    <color name="profile_background">#ffffff</color>
+    <color name="profile_gap">#f7f8fc</color>
+    <color name="profile_upper_button_font">#979797</color>
+    <color name="edit_profile_border">#B6B6B6</color>
+    <color name="profile_button_active">#3972f7</color>
+    <color name="profile_default_status_bar">#0b0802</color>
 </resources>

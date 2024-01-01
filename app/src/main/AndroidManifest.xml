@@ -12,7 +12,9 @@
 
     <uses-feature android:name="android.hardware.camera.any" />
 
-    <uses-permission android:name="android.permission.CAMERA" android:required="false"/>
+    <uses-permission
+        android:name="android.permission.CAMERA"
+        android:required="false" />
 
     <uses-feature android:name="android.hardware.camera.flash" />
 
@@ -31,12 +33,18 @@
         android:theme="@style/Theme.HALALiFE"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".Main.Profile"
+            android:exported="false" />
+        <activity
+            android:name=".Main.Home"
+            android:exported="false" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.immo2n.halalife.fileprovider"
-            android:grantUriPermissions="true"
-            android:exported="false">
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />

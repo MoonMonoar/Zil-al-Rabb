@@ -39,6 +39,7 @@ import com.immo2n.halalife.Custom.ImageUtils;
 import com.immo2n.halalife.Custom.Net;
 import com.immo2n.halalife.DataObjects.FileCallback;
 import com.immo2n.halalife.DataObjects.HalalCheckObject;
+import com.immo2n.halalife.Main.Home;
 import com.immo2n.halalife.R;
 import com.immo2n.halalife.SubActivity.CropImage;
 import com.immo2n.halalife.databinding.ActivityProfilePictureBinding;
@@ -239,7 +240,11 @@ public class ProfilePicture extends AppCompatActivity {
                     if(object.isSuccess()){
                         if(object.isHalal()){
                             runOnUiThread(() -> binding.saveMessage.setText(global.getActivity().getText(R.string.image_looks_good)));
-                            global.toast("DONE");
+                            //Its saved already, go home -- sync tho
+                            appState.syncProfileAuto();
+                            Intent intent = new Intent(ProfilePicture.this, Home.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
                         }
                         else {
                             runOnUiThread(() -> binding.saveMessage.setText(global.getActivity().getText(R.string.image_is_not_halal_please_select_halal_image)));

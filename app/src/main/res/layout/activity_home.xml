@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".Main.Home">
+
+    <LinearLayout
+        android:background="@color/white"
+        android:id="@+id/header"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:padding="10dp"
+            android:src="@drawable/app_banner"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/halalife" />
+
+        <RelativeLayout
+            android:gravity="end"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:contentDescription="@string/profile"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="12dp"
+                android:id="@+id/profileButton"
+                android:src="@drawable/user_image_default"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/border"
+        android:elevation="1dp"
+        app:layout_constraintBottom_toBottomOf="@+id/header"
+        app:layout_constraintTop_toBottomOf="@+id/header" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:background="@color/white"
+        android:visibility="gone"
+        android:layout_marginBottom="71dp"
+        android:layout_marginTop="61dp"
+        android:id="@+id/mainBody"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toTopOf="@+id/footer"
+        app:layout_constraintTop_toBottomOf="@+id/header" />
+
+    <RelativeLayout
+        android:layout_marginBottom="71dp"
+        android:layout_marginTop="61dp"
+        app:layout_constraintBottom_toTopOf="@+id/footer"
+        app:layout_constraintTop_toBottomOf="@+id/header"
+        android:background="@color/white"
+        android:gravity="center"
+        android:id="@+id/homeLoading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:progressTint="@color/home_main"
+            android:layout_width="50dp"
+            android:layout_height="50dp"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:background="@color/white"
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="71dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <View
+            android:elevation="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/border"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:baselineAligned="false"
+            tools:ignore="UselessParent">
+
+            <LinearLayout
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:id="@+id/homeButton"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/homeIcon"
+                    android:textColor="@color/home_main"
+                    android:gravity="center"
+                    android:textSize="25sp"
+                    android:fontFamily="@font/fa_solid"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="@string/fa_home"/>
+
+                <TextView
+                    android:id="@+id/homeText"
+                    android:layout_marginTop="-10dp"
+                    android:textSize="13sp"
+                    android:textColor="@color/home_main"
+                    android:gravity="center"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="@string/home"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:id="@+id/peopleButton"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/peopleIcon"
+                    android:textColor="@color/muted"
+                    android:gravity="center"
+                    android:textSize="25sp"
+                    android:fontFamily="@font/fa_solid"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="@string/fa_people"/>
+
+                <TextView
+                    android:id="@+id/peopleText"
+                    android:layout_marginTop="-10dp"
+                    android:textSize="13sp"
+                    android:textColor="@color/muted"
+                    android:gravity="center"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="@string/people"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:id="@+id/addButton"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/addIcon"
+                    android:textColor="@color/home_main"
+                    android:gravity="center"
+                    android:textSize="50sp"
+                    android:fontFamily="@font/fa_solid"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/fa_add"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:id="@+id/searchButton"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/searchIcon"
+                    android:textColor="@color/muted"
+                    android:gravity="center"
+                    android:textSize="25sp"
+                    android:fontFamily="@font/fa_solid"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="@string/fa_search"/>
+
+                <TextView
+                    android:id="@+id/searchText"
+                    android:layout_marginTop="-10dp"
+                    android:textSize="13sp"
+                    android:textColor="@color/muted"
+                    android:gravity="center"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="@string/search"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:id="@+id/menuButton"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/menuIcon"
+                    android:textColor="@color/muted"
+                    android:gravity="center"
+                    android:textSize="25sp"
+                    android:fontFamily="@font/fa_solid"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:text="@string/fa_menu"/>
+
+                <TextView
+                    android:id="@+id/menuText"
+                    android:layout_marginTop="-10dp"
+                    android:textSize="13sp"
+                    android:textColor="@color/muted"
+                    android:gravity="center"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="@string/menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+        
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

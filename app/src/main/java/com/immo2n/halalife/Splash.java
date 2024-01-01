@@ -15,6 +15,7 @@ import com.immo2n.halalife.Login.Login;
 import com.immo2n.halalife.Login.ProfilePicture;
 import com.immo2n.halalife.Login.Registration;
 import com.immo2n.halalife.Login.Verification;
+import com.immo2n.halalife.Main.Home;
 
 public class Splash extends AppCompatActivity {
     private Global global;
@@ -32,16 +33,18 @@ public class Splash extends AppCompatActivity {
     }
 
     private void checkRoute() {
+        Intent destination = new Intent(this, Login.class);
         //Goto login
         if(appState.isUserLoggedIn()){
             //Go home or Verify
             if(appState.getProfile().getEmail_verified().equals("Yes")){
                 //Go to home
                 if(appState.needProfilePicUpdate()){
-                    startActivity(new Intent(this, ProfilePicture.class));
+                    //destination = new Intent(this, ProfilePicture.class);
+                    destination = new Intent(this, Home.class);
                 }
                 else {
-                    global.toast("Home!");
+                    destination = new Intent(this, Home.class);
                 }
             }
             else {
@@ -49,10 +52,7 @@ public class Splash extends AppCompatActivity {
                 startActivity(new Intent(this, Verification.class));
             }
         }
-        else {
-            //Go to login
-            startActivity(new Intent(this, Login.class));
-        }
-        finish();
+        destination.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(destination);
     }
 }
