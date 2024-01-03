@@ -69,4 +69,9 @@
     <string name="followers">Followers</string>
     <string name="following">Following</string>
     <string name="media">Media</string>
+    <string name="fa_globe"></string>
+    <string name="fa_clock"></string>
+    <string name="fa_work"></string>
+    <string name="fa_college"></string>
+    <string name="fa_location"></string>
 </resources>

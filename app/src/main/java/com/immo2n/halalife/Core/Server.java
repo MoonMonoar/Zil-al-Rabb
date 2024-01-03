@@ -15,7 +15,7 @@ public class Server {
     public static final String REASON_UPLOAD_DP = "DP",
             REASON_UPLOAD_FACE = "FACE";
     public static int uploader_index;
-    public static String apiEndPoint = "http://192.168.124.54"; //Main api end point
+    public static String apiEndPoint = "http://172.17.144.1"; //Main api end point
     public static String
             routeSignup = apiEndPoint+"/api/signup.php",
             routeGetProfile = apiEndPoint+"/api/getProfile.php",
