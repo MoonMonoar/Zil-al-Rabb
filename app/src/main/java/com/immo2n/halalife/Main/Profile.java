@@ -32,25 +32,6 @@ public class Profile extends AppCompatActivity {
         //Add user posts or others
         //Demos
         gridsList.add(new ProfileGrids(null, null, false));
-        gridsList.add(new ProfileGrids(null, null, false));
-        gridsList.add(new ProfileGrids(null, null, false));
-        gridsList.add(new ProfileGrids(null, null, false));
-        gridsList.add(new ProfileGrids(null, null, false));
-        gridsList.add(new ProfileGrids(null, null, false));
-        gridsList.add(new ProfileGrids(null, null, false));
-        gridsList.add(new ProfileGrids(null, null, false));
-        gridsList.add(new ProfileGrids(null, null, false));
-        gridsList.add(new ProfileGrids(null, null, false));
-        gridsList.add(new ProfileGrids(null, null, false));
-        gridsList.add(new ProfileGrids(null, null, false));
-        gridsList.add(new ProfileGrids(null, null, false));
-        gridsList.add(new ProfileGrids(null, null, false));
-        gridsList.add(new ProfileGrids(null, null, false));
-        gridsList.add(new ProfileGrids(null, null, false));
-        gridsList.add(new ProfileGrids(null, null, false));
-        gridsList.add(new ProfileGrids(null, null, false));
-        gridsList.add(new ProfileGrids(null, null, false));
-        gridsList.add(new ProfileGrids(null, null, false));
 
         //Init
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
