@@ -183,7 +183,8 @@ public class ProfilePicture extends AppCompatActivity {
         if(null != face && null != fullDp){
             server.uploadFilesIsolated(new File[]{
                             face,
-                            fullDp},
+                            fullDp
+                    },
                     new String[]{
                             Server.REASON_UPLOAD_FACE,
                             Server.REASON_UPLOAD_DP

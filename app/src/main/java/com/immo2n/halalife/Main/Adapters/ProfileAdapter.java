@@ -43,15 +43,25 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.GridView
             //Do process info
 
 
-
-
             //Free loading
-            holder.loading.setVisibility(View.GONE);
-            holder.mainCardBody.setVisibility(View.VISIBLE);
+            freeLoading(holder);
         }
         else {
             //Its a post
+            View view = LayoutInflater.from(context).inflate(R.layout.posts, parent, false);
+            holder.mainCardBody.addView(view);
+            //Do process
+
+
+            //Free loading
+            freeLoading(holder);
         }
+    }
+
+    private void freeLoading(GridViewHolder holder){
+        //Free loading
+        holder.loading.setVisibility(View.GONE);
+        holder.mainCardBody.setVisibility(View.VISIBLE);
     }
 
     @Override

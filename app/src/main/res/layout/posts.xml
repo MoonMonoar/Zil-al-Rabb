@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/white_robust"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <View
+        android:background="@color/profile_gap"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+    <LinearLayout
+        android:padding="15dp"
+        android:id="@+id/postHeaders"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:src="@drawable/demo_user"
+            android:layout_width="50dp"
+            android:layout_height="50dp"/>
+
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:layout_marginStart="15dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/userName"
+                    android:textColor="@color/black"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="RJ SOMRAT AHMED"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="18dp"
+                    android:contentDescription="@string/verified_badge"
+                    android:src="@drawable/verified_badge" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/timeAgo"
+                android:textColor="@color/text_secondary"
+                android:textSize="15sp"
+                android:fontFamily="@font/ubuntu"
+                android:text="5 min ago"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <TextView
+            android:gravity="center"
+            android:textSize="24sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/fa_solid"
+            android:text="\uf141"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/mediaBody"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:src="@drawable/nature_demo"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/post_content" />
+
+    </RelativeLayout>
+    <LinearLayout
+        android:paddingTop="5dp"
+        android:paddingBottom="20dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:orientation="vertical"
+        android:id="@+id/actionBody"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="240dp"
+            android:layout_height="50dp">
+            <LinearLayout
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="70dp"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:textSize="28sp"
+                    android:textColor="@color/red_robust"
+                    android:fontFamily="@font/fa_solid"
+                    android:text="@string/fa_heart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="200K"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginStart="15dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="70dp"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:textSize="28sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/fa_regular"
+                    android:text="@string/fa_comments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="200K"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginStart="15dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="70dp"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:textSize="24sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/fa_regular"
+                    android:text="@string/fa_share"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/ubuntu"
+                    android:text="200K"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/postBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:text="\@Someone -  MashaAllha, The creation of Allah is beautiful. Allah may bring piece to us, and keep his mercy on us, InshaAllah."
+                android:fontFamily="@font/ubuntu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

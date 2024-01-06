@@ -6,7 +6,7 @@ import com.immo2n.halalife.Main.Profile;
 public class ProfileGrids {
     Profile profile;
     AppState appState;
-    boolean isInfoGreed = false;
+    boolean isInfoGreed;
 
     public ProfileGrids(Profile profile, AppState appState, boolean isInfoGreed) {
         this.profile = profile;

@@ -30,7 +30,8 @@ public class Profile extends AppCompatActivity {
         List<ProfileGrids> gridsList = new ArrayList<>();
         gridsList.add(new ProfileGrids(null, null, true));
         //Add user posts or others
-
+        //Demos
+        gridsList.add(new ProfileGrids(null, null, false));
 
         //Init
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);

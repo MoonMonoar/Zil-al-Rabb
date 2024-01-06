@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/profile_background"
+    android:paddingBottom="10dp"
     tools:context=".Main.Profile">
 
     <RelativeLayout
@@ -124,7 +125,7 @@
                 android:fontFamily="@font/ubuntu"
                 android:text="HALALiFE CEO, Entrepreneur, Bangladesh"
                 android:textColor="@color/text_secondary"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -452,9 +453,7 @@
         android:layout_height="1dp"/>
 
     <LinearLayout
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_margin="10dp"
         android:padding="5dp"
         android:orientation="horizontal"
         android:layout_width="match_parent"
