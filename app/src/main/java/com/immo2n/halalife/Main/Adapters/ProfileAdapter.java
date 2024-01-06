@@ -35,27 +35,27 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.GridView
 
     @Override
     public void onBindViewHolder(@NonNull GridViewHolder holder, int position) {
+        holder.mainCardBody.removeAllViews(); //NEVER EVER FORGET THIS LINE, IT CAUSES POSITION ERRORS AND GHOSTLY BEHAVIOUR
         ProfileGrids item = itemList.get(position);
+        View view;
         if(item.isInfoGreed()){
             //Show the profile info
-            View view = LayoutInflater.from(context).inflate(R.layout.profile_main_grid, parent, false);
-            holder.mainCardBody.addView(view);
+            view = LayoutInflater.from(context).inflate(R.layout.profile_main_grid, parent, false);
             //Do process info
 
 
             //Free loading
-            freeLoading(holder);
         }
         else {
             //Its a post
-            View view = LayoutInflater.from(context).inflate(R.layout.posts, parent, false);
-            holder.mainCardBody.addView(view);
+            view = LayoutInflater.from(context).inflate(R.layout.posts, parent, false);
             //Do process
 
 
             //Free loading
-            freeLoading(holder);
         }
+        holder.mainCardBody.addView(view);
+        freeLoading(holder);
     }
 
     private void freeLoading(GridViewHolder holder){
@@ -70,7 +70,6 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.GridView
     }
 
     public static class GridViewHolder extends RecyclerView.ViewHolder {
-
         LinearLayout mainCardBody, loading;
         public GridViewHolder(@NonNull View itemView) {
             super(itemView);

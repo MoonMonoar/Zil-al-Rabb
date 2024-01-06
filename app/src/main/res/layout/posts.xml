@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white_robust"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -75,12 +77,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:src="@drawable/nature_demo"
-            android:scaleType="centerCrop"
+
+        <com.jsibbold.zoomage.ZoomageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/post_content" />
+            android:adjustViewBounds="true"
+            android:maxHeight="1350px"
+            android:scaleType="centerCrop"
+            android:src="@drawable/nature_demo"
+            app:zoomage_animateOnReset="true"
+            app:zoomage_autoCenter="true"
+            app:zoomage_autoResetMode="ALWAYS"
+            app:zoomage_doubleTapToZoom="false"
+            app:zoomage_maxScale="8"
+            app:zoomage_minScale="0.6"
+            app:zoomage_restrictBounds="false"
+            app:zoomage_translatable="false"
+            app:zoomage_zoomable="true"
+            tools:ignore="PxUsage" />
 
     </RelativeLayout>
     <LinearLayout
@@ -176,7 +190,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:textColor="@color/black"
                 android:text="\@Someone -  MashaAllha, The creation of Allah is beautiful. Allah may bring piece to us, and keep his mercy on us, InshaAllah."
                 android:fontFamily="@font/ubuntu"

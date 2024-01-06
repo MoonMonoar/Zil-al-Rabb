@@ -36,6 +36,7 @@ android {
 
 dependencies {
     //Custom
+    implementation("com.jsibbold:zoomage:1.3.1")
     implementation("com.google.code.gson:gson:2.10")
     implementation("com.squareup.picasso:picasso:2.71828")
     implementation("com.github.bumptech.glide:glide:4.14.2")
