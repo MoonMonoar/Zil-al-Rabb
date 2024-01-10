@@ -18,7 +18,8 @@
         android:layout_height="wrap_content">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:src="@drawable/demo_user"
+            android:id="@+id/userImage"
+            android:src="@drawable/user_image_default"
             android:layout_width="50dp"
             android:layout_height="50dp"/>
 
@@ -41,11 +42,12 @@
                     android:textSize="17sp"
                     android:textStyle="bold"
                     android:fontFamily="@font/ubuntu"
-                    android:text="RJ SOMRAT AHMED"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
                 <ImageView
+                    android:visibility="gone"
+                    android:id="@+id/badge"
                     android:layout_width="28dp"
                     android:layout_height="18dp"
                     android:contentDescription="@string/verified_badge"
@@ -58,17 +60,17 @@
                 android:textColor="@color/text_secondary"
                 android:textSize="15sp"
                 android:fontFamily="@font/ubuntu"
-                android:text="5 min ago"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
 
         <TextView
+            android:id="@+id/menu"
             android:gravity="center"
             android:textSize="24sp"
             android:textColor="@color/black"
             android:fontFamily="@font/fa_solid"
-            android:text="\uf141"
+            android:text="@string/uf141"
             android:layout_width="50dp"
             android:layout_height="match_parent"/>
     </LinearLayout>
@@ -77,24 +79,65 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
         <com.jsibbold.zoomage.ZoomageView
+            android:visibility="gone"
+            android:maxHeight="1350px"
+            android:scaleType="fitCenter"
+            android:id="@+id/PostImage"
+            android:adjustViewBounds="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:maxHeight="1350px"
-            android:scaleType="centerCrop"
-            android:src="@drawable/nature_demo"
-            app:zoomage_animateOnReset="true"
-            app:zoomage_autoCenter="true"
-            app:zoomage_autoResetMode="ALWAYS"
-            app:zoomage_doubleTapToZoom="false"
-            app:zoomage_maxScale="8"
-            app:zoomage_minScale="0.6"
             app:zoomage_restrictBounds="false"
-            app:zoomage_translatable="false"
+            app:zoomage_animateOnReset="true"
+            app:zoomage_autoResetMode="ALWAYS"
+            app:zoomage_autoCenter="true"
+            app:zoomage_doubleTapToZoom="false"
             app:zoomage_zoomable="true"
+            app:zoomage_translatable="false"
+            app:zoomage_minScale="0.6"
+            app:zoomage_maxScale="8"
             tools:ignore="PxUsage" />
+
+        <LinearLayout
+            android:visibility="gone"
+            android:orientation="vertical"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:id="@+id/loadFailed"
+            android:layout_width="match_parent"
+            android:layout_height="1350px"
+            android:maxHeight="1350px"
+            tools:ignore="PxUsage">
+            <TextView
+                android:textColor="@color/black"
+                android:fontFamily="@font/ubuntu"
+                android:textSize="20sp"
+                android:text="@string/load_failed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:maxWidth="250dp"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/ubuntu"
+                android:textSize="15sp"
+                android:text="Network error occured!"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:id="@+id/imageLoading"
+            android:layout_width="match_parent"
+            android:layout_height="1350px"
+            android:maxHeight="1350px"
+            tools:ignore="PxUsage">
+            <ProgressBar
+                android:layout_width="50dp"
+                android:layout_height="50dp"/>
+        </LinearLayout>
 
     </RelativeLayout>
     <LinearLayout
@@ -114,7 +157,7 @@
             <LinearLayout
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:layout_width="70dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent">
 
                 <TextView
@@ -126,19 +169,20 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
+                    android:id="@+id/likeCount"
                     android:layout_marginStart="5dp"
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     android:fontFamily="@font/ubuntu"
-                    android:text="200K"
-                    android:layout_width="match_parent"
+                    android:text="@string/_0"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
             <LinearLayout
-                android:layout_marginStart="15dp"
+                android:layout_marginStart="20dp"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:layout_width="70dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent">
 
                 <TextView
@@ -150,19 +194,20 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
+                    android:id="@+id/commentCount"
                     android:layout_marginStart="5dp"
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     android:fontFamily="@font/ubuntu"
-                    android:text="200K"
-                    android:layout_width="match_parent"
+                    android:text="@string/_0"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
             <LinearLayout
-                android:layout_marginStart="15dp"
+                android:layout_marginStart="20dp"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:layout_width="70dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent">
 
                 <TextView
@@ -174,12 +219,13 @@
                     android:layout_height="wrap_content"/>
 
                 <TextView
+                    android:id="@+id/shareCount"
                     android:layout_marginStart="5dp"
                     android:textColor="@color/black"
                     android:textSize="15sp"
                     android:fontFamily="@font/ubuntu"
-                    android:text="200K"
-                    android:layout_width="match_parent"
+                    android:text="@string/_0"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             </LinearLayout>
         </LinearLayout>

@@ -40,8 +40,7 @@ public class Splash extends AppCompatActivity {
             if(appState.getProfile().getEmail_verified().equals("Yes")){
                 //Go to home
                 if(appState.needProfilePicUpdate()){
-                    //destination = new Intent(this, ProfilePicture.class);
-                    destination = new Intent(this, Home.class);
+                    destination = new Intent(this, ProfilePicture.class);
                 }
                 else {
                     destination = new Intent(this, Home.class);

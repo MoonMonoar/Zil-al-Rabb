@@ -53,7 +53,6 @@ public class AppState {
             public void handleMessage(@NonNull Message msg) {
                 super.handleMessage(msg);
                 try {
-                    Log.d(Global.LOG_TAG, msg.obj.toString());
                     ProfileResponse response = global.getGson().fromJson(msg.obj.toString(), ProfileResponse.class);
                     if(response.isStatusOk()){
                         dBhandler.addSetting(DBhandler.userProfileEntryName, global.getGson().toJson(response.getProfile()));
@@ -68,7 +67,7 @@ public class AppState {
     public boolean needProfilePicUpdate(){
         if(isUserLoggedIn()) {
             Profile profile = getProfile();
-            return profile.getSkip_photo_update().equals("No") && profile.getPhoto().equals("DEFAULT");
+            return profile.getSkip_photo_update().equals("No") && (null == profile.getPhoto() || profile.getPhoto().equals("DEFAULT"));
         }
         return false;
     }

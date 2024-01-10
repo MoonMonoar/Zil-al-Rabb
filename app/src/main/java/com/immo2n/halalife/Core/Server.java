@@ -5,28 +5,38 @@ import static com.immo2n.halalife.Core.FileUploader.uploadFile;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.immo2n.halalife.Custom.Global;
+import com.immo2n.halalife.Custom.Net;
 import com.immo2n.halalife.DataObjects.FileCallback;
+import com.immo2n.halalife.DataObjects.PostResponse;
+import com.immo2n.halalife.DataObjects.PostsObject;
 
 import java.io.File;
+import java.util.List;
 
 public class Server {
     public static final String REASON_UPLOAD_DP = "DP",
             REASON_UPLOAD_FACE = "FACE";
     public static int uploader_index;
-    public static String apiEndPoint = "http://172.17.144.1"; //Main api end point
+    public static String apiEndPoint = "http://192.168.248.54"; //Main api end point
     public static String
             routeSignup = apiEndPoint+"/api/signup.php",
             routeGetProfile = apiEndPoint+"/api/getProfile.php",
             routeUploadFile = apiEndPoint+"/api/upload.php",
+            routeGetPosts = apiEndPoint+"/api/getPosts.php",
             routeDPupdate = apiEndPoint+"/api/saveProfilePicture.php",
+            routeUserAssets = apiEndPoint+"/assets/",
             routeUpdateProfile = apiEndPoint+"/api/updateProfile.php";
     Global global;
     AppState appState;
     public Server(Global global){
         this.global = global;
         appState = new AppState(global);
+    }
+    public static String getUserAsset(String fileName){
+        return routeUserAssets+fileName;
     }
     public String getApiEndPoint() {
         return apiEndPoint;
@@ -78,6 +88,35 @@ public class Server {
                 m.what = UPLOAD_ISOLATED_CODE;
                 m.obj = fileCallback;
                 callBack.sendMessage(m);
+            }
+        });
+    }
+    public interface PostsCallBack {
+        void onSuccess(List<PostsObject> list);
+        void onFail(String message);
+    }
+    public void getPosts(String userToken, int offset, PostsCallBack callBack){
+        new Net(null, global, true).postParallel(routeGetPosts,
+                "token=" + global.makeUrlSafe(userToken) + "&offset=" + global.makeUrlSafe(String.valueOf(offset)),
+                new Net.parallelEvents() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    PostResponse postResponse = global.getGson().fromJson(response, PostResponse.class);
+                    if(postResponse.isSuccess()){
+                        callBack.onSuccess(postResponse.getPosts());
+                    }
+                    else {
+                        callBack.onFail("Load failed!");
+                    }
+                }
+                catch (Exception e){
+                    callBack.onFail(e.toString());
+                }
+            }
+            @Override
+            public void onError(String message) {
+                callBack.onFail(message);
             }
         });
     }

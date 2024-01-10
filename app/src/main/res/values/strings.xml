@@ -78,4 +78,7 @@
     <string name="fa_heart"></string>
     <string name="fa_comments"></string>
     <string name="fa_share"></string>
+    <string name="_0">0</string>
+    <string name="uf141"></string>
+    <string name="load_failed">Load failed!</string>
 </resources>

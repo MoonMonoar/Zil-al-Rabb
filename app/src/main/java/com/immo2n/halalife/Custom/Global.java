@@ -4,12 +4,17 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.provider.Settings;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,14 +52,22 @@ public class Global {
         this.context = context;
         this.activity = activity;
     }
+    public void setBoldText(TextView textView, String fullText, String boldText) {
+        SpannableString spannableString = new SpannableString(fullText);
+        int startIndex = fullText.indexOf(boldText);
+        int endIndex = startIndex + boldText.length();
+        spannableString.setSpan(new StyleSpan(Typeface.BOLD), startIndex, endIndex, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        runOnUI(() -> textView.setText(spannableString));
+    }
+    public Drawable getDrawable(int id){
+        return ContextCompat.getDrawable(context, id);
+    }
     public Gson getGson(){
         return gson;
     }
-
     public Context getContext() {
         return context;
     }
-
     public Activity getActivity() {
         return activity;
     }

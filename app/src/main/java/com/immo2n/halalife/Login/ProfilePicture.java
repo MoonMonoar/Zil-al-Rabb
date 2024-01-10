@@ -15,6 +15,7 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -220,6 +221,9 @@ public class ProfilePicture extends AppCompatActivity {
                                         }
                                         saveToProfile(dp_file, face_file);
                                     }
+                                }
+                                else {
+                                    Log.d(Global.LOG_TAG, "File Upload Callback: " + fileCallback.getStatus());
                                 }
                             }
                         }
