@@ -74,10 +74,31 @@
             android:layout_width="50dp"
             android:layout_height="match_parent"/>
     </LinearLayout>
+
     <RelativeLayout
         android:id="@+id/mediaBody"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:visibility="gone"
+            android:orientation="vertical"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:id="@+id/dpLayer"
+            android:layout_width="match_parent"
+            android:layout_height="1200px"
+            android:maxHeight="1350px"
+            tools:ignore="PxUsage">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                app:civ_border_width="3dp"
+                app:civ_border_color="@color/dp_border"
+                android:id="@+id/faceImage"
+                android:layout_width="290dp"
+                android:layout_height="290dp"/>
+
+        </RelativeLayout>
 
         <com.jsibbold.zoomage.ZoomageView
             android:visibility="gone"
@@ -231,14 +252,15 @@
         </LinearLayout>
 
         <RelativeLayout
+            android:visibility="gone"
             android:id="@+id/postBody"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
             <TextView
+                android:maxLines="4"
+                android:id="@+id/bodyText"
                 android:textSize="15sp"
                 android:textColor="@color/black"
-                android:text="\@Someone -  MashaAllha, The creation of Allah is beautiful. Allah may bring piece to us, and keep his mercy on us, InshaAllah."
                 android:fontFamily="@font/ubuntu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>

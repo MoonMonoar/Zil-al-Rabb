@@ -26,6 +26,7 @@
     <color name="edit_profile_border">#B6B6B6</color>
     <color name="profile_button_active">#3972f7</color>
     <color name="profile_default_status_bar">#0b0802</color>
+    <color name="dp_border">#D8D8D8</color>
 
     <color name="red_robust">#EA0B0B</color>
 </resources>

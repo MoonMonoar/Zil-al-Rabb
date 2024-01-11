@@ -34,6 +34,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".Main.Create"
+            android:exported="false" />
+        <activity
+            android:name=".SubActivity.ProfilePictureCropper"
+            android:exported="false" />
+        <activity
             android:name=".Main.Profile"
             android:exported="false" />
         <activity

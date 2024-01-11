@@ -19,6 +19,7 @@ public class Profile {
     String time_joined;
     String last_login;
     String ip_address;
+    Boolean is_banned;
     String skip_photo_update;
     String address;
     String living;
@@ -27,6 +28,14 @@ public class Profile {
 
     public String getAddress() {
         return address;
+    }
+
+    public Boolean getIs_banned() {
+        return is_banned;
+    }
+
+    public void setIs_banned(Boolean is_banned) {
+        this.is_banned = is_banned;
     }
 
     public void setAddress(String address) {

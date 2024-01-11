@@ -81,4 +81,6 @@
     <string name="_0">0</string>
     <string name="uf141"></string>
     <string name="load_failed">Load failed!</string>
+    <string name="save">Save</string>
+    <string name="publish">Publish</string>
 </resources>

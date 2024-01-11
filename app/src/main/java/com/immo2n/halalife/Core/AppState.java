@@ -48,12 +48,11 @@ public class AppState {
         return "null";
     }
     public void syncProfileAuto(){
-        new Net(new Handler(Looper.getMainLooper()){
+        new Net(null, global, false).postParallel(Server.routeGetProfile, "token=" + global.makeUrlSafe(getToken()), new Net.parallelEvents() {
             @Override
-            public void handleMessage(@NonNull Message msg) {
-                super.handleMessage(msg);
+            public void onResponse(String r) {
                 try {
-                    ProfileResponse response = global.getGson().fromJson(msg.obj.toString(), ProfileResponse.class);
+                    ProfileResponse response = global.getGson().fromJson(r, ProfileResponse.class);
                     if(response.isStatusOk()){
                         dBhandler.addSetting(DBhandler.userProfileEntryName, global.getGson().toJson(response.getProfile()));
                     }
@@ -62,7 +61,11 @@ public class AppState {
                     Log.d(Global.LOG_TAG, e.toString());
                 }
             }
-        }, global, false).post(Server.routeGetProfile, "token="+global.makeUrlSafe(getToken()), 3);
+            @Override
+            public void onError(String message) {
+                Log.d(Global.LOG_TAG, message);
+            }
+        });
     }
     public boolean needProfilePicUpdate(){
         if(isUserLoggedIn()) {

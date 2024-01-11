@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import com.immo2n.halalife.Core.Profile;
 import com.immo2n.halalife.Core.Server;
 import com.immo2n.halalife.Custom.Global;
 import com.immo2n.halalife.Custom.LoadMedia;
+import com.immo2n.halalife.DataObjects.PostsObject;
 import com.immo2n.halalife.Main.DataObjects.ProfileGrid;
 import com.immo2n.halalife.R;
 import com.jsibbold.zoomage.ZoomageView;
@@ -139,20 +141,32 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.GridView
             //Its a post
             view = LayoutInflater.from(context).inflate(R.layout.posts, parent, false);
             //Do process
+            PostsObject object = item.getPostsObject();
+            Profile postUser = object.getUser_profile();
             //Elements
-            CircleImageView face = view.findViewById(R.id.userImage);
+            CircleImageView face = view.findViewById(R.id.userImage),
+                            faceImage = view.findViewById(R.id.faceImage);
             ImageView badge = view.findViewById(R.id.badge);
 
             TextView username = view.findViewById(R.id.userName),
                     time = view.findViewById(R.id.timeAgo),
+                    bodyText = view.findViewById(R.id.bodyText),
+                    likes = view.findViewById(R.id.likeCount),
+                    comments = view.findViewById(R.id.commentCount),
+                    shares = view.findViewById(R.id.shareCount),
                     menu = view.findViewById(R.id.menu);
 
             ZoomageView mediaImage = view.findViewById(R.id.PostImage);
             LinearLayout mediaLoading = view.findViewById(R.id.imageLoading),
                     mediaLoadFailed = view.findViewById(R.id.loadFailed);
+            RelativeLayout postBodyHolder = view.findViewById(R.id.postBody),
+                            dpLayer = view.findViewById(R.id.dpLayer);
+
+            likes.setText(String.format(Locale.getDefault(), "%d", object.getLikes()));
+            comments.setText(String.format(Locale.getDefault(), "%d", object.getComments()));
+            shares.setText(String.format(Locale.getDefault(), "%d", object.getShares()));
 
             //This is the profile of the post user not the viewer. The viewer is on item.getProfile()
-            Profile postUser = item.getPostsObject().getUser_profile();
             username.setText(postUser.getFull_name());
             if(postUser.getVerified_badge()){
                 badge.setVisibility(View.VISIBLE);
@@ -160,24 +174,40 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.GridView
             if(null != postUser.getFace()){
                 Picasso.get().load(Server.getUserAsset(postUser.getFace())).placeholder(global.getDrawable(R.drawable.user_image_default)).into(face);
             }
+            if(null != object.getTime()){
+                time.setText(object.getTime());
+            }
 
             //Media
             List<String> files = item.getPostsObject().getFile_array();
-            loadMedia.get(Server.getUserAsset(Server.getUserAsset(files.get(0))), new LoadMedia.CallBack() {
-                @Override
-                public void onDone(File file) {
-                    mediaImage.setImageURI(Uri.fromFile(file));
-                    mediaLoading.setVisibility(View.GONE);
-                    mediaImage.setVisibility(View.VISIBLE);
-                }
 
-                @Override
-                public void onFail(String message) {
-                    Log.d(Global.LOG_TAG, message);
-                    mediaLoading.setVisibility(View.GONE);
-                    mediaLoadFailed.setVisibility(View.VISIBLE);
-                }
-            });
+            //Media layout
+            if(object.getType().equals("DP_UPDATE")) {
+                loadMedia.get(Server.getUserAsset(files.get(0)), new LoadMedia.CallBack() {
+                    @Override
+                    public void onDone(File file) {
+                        global.runOnUI(() -> {
+                            faceImage.setImageURI(Uri.fromFile(file));
+                            mediaLoading.setVisibility(View.GONE);
+                            dpLayer.setVisibility(View.VISIBLE);
+                        });
+                    }
+
+                    @Override
+                    public void onFail(String message) {
+                        global.runOnUI(() -> {
+                            mediaLoading.setVisibility(View.GONE);
+                            mediaLoadFailed.setVisibility(View.VISIBLE);
+                        });
+                    }
+                });
+            }
+
+            //Post types
+            if(null != object.getBody() && !object.getBody().isEmpty()){
+                global.setBoldText(bodyText, postUser.getUsername()+" "+ object.getBody(), postUser.getUsername());
+                postBodyHolder.setVisibility(View.VISIBLE);
+            }
         }
         holder.mainCardBody.addView(view);
         freeLoading(holder);

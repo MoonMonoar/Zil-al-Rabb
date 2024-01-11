@@ -16,6 +16,8 @@ public class PostsObject {
     private boolean isBanned;
     private int sponsorLevel;
     private int likes;
+    private int comments;
+    private int shares;
     private int views;
     private int rank;
     private Profile user_profile;
@@ -34,6 +36,22 @@ public class PostsObject {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getComments() {
+        return comments;
+    }
+
+    public void setComments(int comments) {
+        this.comments = comments;
+    }
+
+    public int getShares() {
+        return shares;
+    }
+
+    public void setShares(int shares) {
+        this.shares = shares;
     }
 
     public int getUser() {
