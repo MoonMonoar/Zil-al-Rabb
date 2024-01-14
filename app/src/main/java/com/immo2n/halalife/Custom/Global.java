@@ -121,14 +121,16 @@ public class Global {
     }
     public void toast(String msg){
         try {
-            LayoutInflater inflater = activity.getLayoutInflater();
-            @SuppressLint("InflateParams") View layout = inflater.inflate(R.layout.toast, null);
-            Toast toast = new Toast(context);
-            TextView textView = layout.findViewById(R.id.textView);
-            textView.setText(msg);
-            toast.setDuration(Toast.LENGTH_SHORT);
-            toast.setView(layout);
-            toast.show();
+            runOnUI(() -> {
+                LayoutInflater inflater = activity.getLayoutInflater();
+                @SuppressLint("InflateParams") View layout = inflater.inflate(R.layout.toast, null);
+                Toast toast = new Toast(context);
+                TextView textView = layout.findViewById(R.id.textView);
+                textView.setText(msg);
+                toast.setDuration(Toast.LENGTH_SHORT);
+                toast.setView(layout);
+                toast.show();
+            });
         }
         catch (Exception e){
             Log.e(LOG_TAG, e.toString());

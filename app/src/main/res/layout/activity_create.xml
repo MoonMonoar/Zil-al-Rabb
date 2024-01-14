@@ -18,12 +18,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
-        android:id="@+id/container"
         android:layout_marginTop="55dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <RelativeLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -38,7 +38,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/topGap"
-                android:layout_margin="15dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="15dp"
                 android:orientation="horizontal"
                 tools:ignore="UselessParent">
 
@@ -64,9 +67,37 @@
             <LinearLayout
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
+                android:layout_marginBottom="15dp"
+                android:id="@+id/llMode"
+                android:layout_below="@id/llButtons"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+
+                <TextView
+                    android:gravity="center"
+                    android:textColor="@color/muted"
+                    android:textSize="21sp"
+                    android:text="@string/fa_world"
+                    android:fontFamily="@font/fa_solid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"/>
+
+                <Spinner
+                    android:gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:id="@+id/privacy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_below="@id/llMode"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 android:orientation="vertical"
                 android:id="@+id/layoutPosts"
-                android:layout_below="@id/llButtons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -85,6 +116,50 @@
                     android:scrollbars="vertical"
                     android:inputType="textMultiLine"
                     android:autofillHints="none" />
+
+                <LinearLayout
+                    android:paddingBottom="20dp"
+                    android:orientation="vertical"
+                    android:id="@+id/addedMediaList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_marginTop="15dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/addMedia"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:background="@drawable/add_media_border"
+                            android:textColor="@color/muted"
+                            android:textSize="20sp"
+                            android:fontFamily="@font/ubuntu"
+                            android:gravity="center"
+                            android:text="@string/add_media"
+                            android:layout_marginEnd="5dp"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="250dp"/>
+
+                        <ImageView
+                            android:id="@+id/firstMediaImage"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?android:attr/selectableItemBackground"
+                            android:layout_marginStart="5dp"
+                            android:scaleType="centerCrop"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="250dp"
+                            android:contentDescription="@string/image"/>
+                    </LinearLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
 

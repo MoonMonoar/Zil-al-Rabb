@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,19 +14,12 @@ import android.provider.MediaStore;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.ActivityResultRegistry;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
@@ -46,7 +38,6 @@ import com.immo2n.halalife.SubActivity.CropImage;
 import com.immo2n.halalife.databinding.ActivityProfilePictureBinding;
 
 import java.io.File;
-import java.io.FileOutputStream;
 
 public class ProfilePicture extends AppCompatActivity {
     private ActivityProfilePictureBinding binding;
@@ -85,7 +76,7 @@ public class ProfilePicture extends AppCompatActivity {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                        ImageUtils.saveUriToFile(global.getContext(), result.getData().getData(), tempFile);
+                        ImageUtils.saveImageUriToFile(global.getContext(), result.getData().getData(), tempFile);
                         processImage();
                     }
                 });

@@ -4,21 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.ImageFormat;
-import android.graphics.Rect;
-import android.graphics.YuvImage;
-import android.media.Image;
 import android.net.Uri;
-import android.os.Build;
 
-import androidx.core.content.FileProvider;
-
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
 
 public class ImageUtils {
     //Model Classes
@@ -47,28 +38,27 @@ public class ImageUtils {
         }
     }
 
-    public static boolean saveUriToFile(Context context, Uri uri, File destinationFile) {
+    public static void saveImageUriToFile(Context context, Uri uri, File destinationFile) {
         try (InputStream inputStream = context.getContentResolver().openInputStream(uri)) {
             if (inputStream != null) {
-                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                return saveBitmapToFile(bitmap, destinationFile);
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inPreferredConfig = Bitmap.Config.RGB_565;
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream, null, options);
+                saveBitmapToFile(bitmap, destinationFile);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return false;
     }
 
-    public static boolean saveBitmapToFile(Bitmap bitmap, File destinationFile) {
+    public static void saveBitmapToFile(Bitmap bitmap, File destinationFile) {
         try (FileOutputStream outputStream = new FileOutputStream(destinationFile)) {
             if (bitmap != null) {
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
-                return true;
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return false;
     }
 
     public static Uri bitmapToUri(Bitmap bitmap, String file_name, Activity activity) {

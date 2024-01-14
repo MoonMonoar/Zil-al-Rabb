@@ -1,7 +1,10 @@
 package com.immo2n.halalife.Custom;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -10,8 +13,24 @@ import java.util.Comparator;
 import java.util.Random;
 
 public class FolderUtils {
+    public static String getCreateCacheFolder(Context context){
+        String folderPath = context.getFilesDir() + "/create_cache";
+        File folder = new File(folderPath);
+        if (!folder.exists()) {
+            if (folder.mkdirs()) {
+                return folderPath;
+            } else {
+                return null;
+            }
+        } else {
+            return folderPath;
+        }
+    }
     public static String getImageFileName(){
-        return "MZ_" + generateRandomDigits(5) + "_" +System.currentTimeMillis() + ".jpg";
+        return "HL_" + generateRandomDigits(5) + "_" +System.currentTimeMillis() + ".jpg";
+    }
+    public static String getVideoFileName(){
+        return "HL_" + generateRandomDigits(5) + "_" +System.currentTimeMillis() + ".mp4";
     }
     public static String generateRandomDigits(int length) {
         if (length <= 0) {
