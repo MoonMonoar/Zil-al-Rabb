@@ -1,16 +1,16 @@
 package com.immo2n.halalife.Main;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.core.text.HtmlCompat;
-
 import android.os.Bundle;
-import android.text.Html;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.text.HtmlCompat;
 
 import com.immo2n.halalife.Custom.Global;
 import com.immo2n.halalife.R;
@@ -21,6 +21,9 @@ import java.util.Objects;
 public class Create extends AppCompatActivity {
     ActivityCreateBinding binding;
     Global global;
+
+    //Behaviour flags
+    boolean bigText = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +36,33 @@ public class Create extends AppCompatActivity {
 
 
 
+        //Post text controls
+        binding.postText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //Do none
+            }
 
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //Text size
+                if(binding.postText.getText().toString().length() > 30){
+                    global.runOnUI(() -> binding.postText.setTextSize(17));
+                    bigText = false;
+                }
+                else {
+                    if(!bigText){
+                        global.runOnUI(() -> binding.postText.setTextSize(26));
+                        bigText = true;
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                //Do none
+            }
+        });
 
         //Toolbar
         setSupportActionBar(binding.toolbar);

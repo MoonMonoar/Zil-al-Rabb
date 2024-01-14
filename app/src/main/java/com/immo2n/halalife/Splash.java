@@ -13,7 +13,6 @@ import com.immo2n.halalife.Core.AppState;
 import com.immo2n.halalife.Custom.Global;
 import com.immo2n.halalife.Login.Login;
 import com.immo2n.halalife.Login.ProfilePicture;
-import com.immo2n.halalife.Login.Registration;
 import com.immo2n.halalife.Login.Verification;
 import com.immo2n.halalife.Main.Home;
 

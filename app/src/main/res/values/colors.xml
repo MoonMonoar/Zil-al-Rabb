@@ -29,4 +29,9 @@
     <color name="dp_border">#D8D8D8</color>
 
     <color name="red_robust">#EA0B0B</color>
+
+    <color name="button_post">#6FBC15</color>
+    <color name="button_reels">#A110BA</color>
+    <color name="textarea_border">#818181</color>
+    <color name="page_gap">#DCDCDC</color>
 </resources>
