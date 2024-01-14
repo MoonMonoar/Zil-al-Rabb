@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">HALALiFE</string>
-    <string name="halalife">HALALife</string>
+    <string name="app_name">Zil</string>
+    <string name="zil_al_rabb">Zil al-Rabb</string>
     <string name="sign_in">Log in</string>
     <string name="hello">Hello!</string>
     <string name="email_id_or_phone">Email id or Phone</string>
