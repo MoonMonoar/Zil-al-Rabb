@@ -1,6 +1,7 @@
 package com.immo2n.halalife.Main;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -10,8 +11,10 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -44,7 +47,7 @@ public class Create extends AppCompatActivity {
     //Behaviour flags
     boolean bigText = false;
     ImageView mediaImageCachedHolder;
-    int fileGridCount = 1;
+    int fileGridCount;
     private ActivityResultLauncher<Intent> cropLauncher, mediaSelectLauncher;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +55,7 @@ public class Create extends AppCompatActivity {
         binding = ActivityCreateBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         global = new Global(this, this);
-
+        fileGridCount = 1;
 
 
 
@@ -154,12 +157,22 @@ public class Create extends AppCompatActivity {
                             ImageView view = mediaImageCachedHolder;
                             if(fileGridCount%2 == 0){
                                 //New grid
-
+                                @SuppressLint("InflateParams")
+                                View gridParent = getLayoutInflater().inflate(R.layout.create_media_item, null);
+                                ImageView leftImage = gridParent.findViewById(R.id.imageLeft);
+                                Glide.with(global.getContext())
+                                        .load(file.getPath())
+                                        .centerCrop()
+                                        .placeholder(R.drawable.file_placeholder)
+                                        .error(R.drawable.error)
+                                        .into(leftImage);
+                                mediaImageCachedHolder = gridParent.findViewById(R.id.imageRight);
+                                binding.addedMediaList.addView(gridParent);
                             }
                             else {
                                 if(null != view){
                                     Glide.with(global.getContext())
-                                            .load(file.getAbsolutePath())
+                                            .load(file.getPath())
                                             .centerCrop()
                                             .placeholder(R.drawable.file_placeholder)
                                             .error(R.drawable.error)
@@ -174,6 +187,7 @@ public class Create extends AppCompatActivity {
                     }
                 }
                 catch (Exception e){
+                    Log.d("MOON-CHECK", e.toString());
                     Snackbar.make(binding.getRoot(), "Selection lost!", Snackbar.LENGTH_SHORT).show();
                 }
             }
