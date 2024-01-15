@@ -1,16 +1,16 @@
 package com.immo2n.halalife.Main;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -20,17 +20,15 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
 
-import com.immo2n.halalife.Custom.FolderUtils;
 import com.immo2n.halalife.Custom.Global;
-import com.immo2n.halalife.Custom.ImageUtils;
 import com.immo2n.halalife.R;
-import com.immo2n.halalife.SubActivity.CropImage;
+import com.immo2n.halalife.SubActivity.Media;
 import com.immo2n.halalife.databinding.ActivityCreateBinding;
 
-import java.io.File;
 import java.util.Objects;
 
 public class Create extends AppCompatActivity {
@@ -42,7 +40,7 @@ public class Create extends AppCompatActivity {
     int postMode = 0; //0 = post, 1 = reels
     ImageView mediaImageCachedHolder;
     int mediaHolderCount = 1;
-    private ActivityResultLauncher<Intent> galleryLauncher, cropLauncher;
+    private ActivityResultLauncher<Intent> cropLauncher;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,37 +103,7 @@ public class Create extends AppCompatActivity {
 
         //Page behavior
         binding.container.setOnClickListener(view -> release_all());
-        galleryLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                        Uri uri = result.getData().getData();
-                        Toast.makeText(global.getContext(), uri.getPath(), Toast.LENGTH_SHORT).show();
 
-
-                        /*
-                        tempFilePostTarget = new File(FolderUtils.getCreateCacheFolder(global.getContext()), FolderUtils.getImageFileName());
-                        if(isVideoUri(result.getData().getData())){
-                            tempFilePostTarget = new File(FolderUtils.getCreateCacheFolder(global.getContext()), FolderUtils.getVideoFileName());
-                            //Video file so, do whats needed - save the file first! from data data
-
-
-                        }
-                        else {
-                            //Image file - so after copying, crop it
-                            new Thread(() -> {
-                                try {
-                                    ImageUtils.saveImageUriToFile(global.getContext(), result.getData().getData(), tempFilePostTarget);
-                                    runOnUiThread(() -> cropLauncher.launch(new Intent(Create.this, CropImage.class).putExtra("path", tempFilePostTarget.getAbsolutePath())));
-                                }
-                                catch (Exception e){
-                                    global.toast("Could not copy file!");
-                                }
-                            }).start();
-                        }
-                         */
-                    }
-                });
         cropLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             //Process the image file
             if (result.getResultCode() == RESULT_OK) {
@@ -147,33 +115,44 @@ public class Create extends AppCompatActivity {
                 }
             }
         });
+
         binding.addMedia.setOnClickListener(view -> {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/* video/*");
-            galleryLauncher.launch(intent);
+            //Go to the media selector to select files
+            if(checkPermission()){
+                //Go to the media activity
+                startActivity(new Intent(Create.this, Media.class));
+            }
+            else {
+                Toast.makeText(this, "Allow file management permission from settings!", Toast.LENGTH_SHORT).show();
+            }
         });
+
+        //Permission for all file access
+        checkPermission();
     }
 
     private void publish() {
 
+
     }
 
-    private void processMediaPosts(File tempFile) {
-        if(mediaHolderCount%2 == 0){
-            //New insert
-            @SuppressLint("InflateParams")
-            View holder = getLayoutInflater().inflate(R.layout.create_media_item, null);
-            ImageView leftImage = holder.findViewById(R.id.imageLeft);
-            leftImage.setImageURI(Uri.fromFile(tempFile));
-            mediaImageCachedHolder = holder.findViewById(R.id.imageRight);
-            binding.addedMediaList.addView(holder);
-        }
-        else {
-            if(null != mediaImageCachedHolder){
-                mediaImageCachedHolder.setImageURI(Uri.fromFile(tempFile));
+    private boolean checkPermission(){
+        boolean r = this.checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) < 0
+                || this.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) < 0;
+        if(r){
+            Toast.makeText(this, "Need file management permission!", Toast.LENGTH_SHORT).show();
+            //Need permission
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
+                intent.setData(Uri.parse("package:" + getPackageName()));
+                startActivity(intent);
             }
+            ActivityCompat.requestPermissions(global.getActivity(), new String[]{
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+            }, 2);
         }
-        mediaHolderCount++;
+        return !r;
     }
 
     @Override
@@ -203,9 +182,5 @@ public class Create extends AppCompatActivity {
         binding.postText.clearFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(binding.postText.getWindowToken(), 0);
-    }
-    private boolean isVideoUri(Uri contentUri) {
-        String type = getContentResolver().getType(contentUri);
-        return type != null && type.startsWith("video/");
     }
 }

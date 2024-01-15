@@ -4,6 +4,7 @@
     <color name="hint_color">#A1A1A1</color>
     <color name="white">#FFFFFFFF</color>
     <color name="white_robust">#FFFFFFFF</color>
+    <color name="black_robust">#121111</color>
     <color name="main">#149346</color>
     <color name="text_secondary">#737373</color>
 
