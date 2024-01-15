@@ -1,15 +1,22 @@
 package com.immo2n.halalife.SubActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.immo2n.halalife.Custom.Global;
+import com.immo2n.halalife.DataObjects.MediaSelectionList;
 import com.immo2n.halalife.R;
 import com.immo2n.halalife.databinding.ActivityMediaBinding;
 
@@ -21,15 +28,23 @@ import java.util.Map;
 
 public class Media extends AppCompatActivity {
     ActivityMediaBinding binding;
-    public static List<File> photosList = new ArrayList<>(),  videosList = new ArrayList<>(), allFiles = new ArrayList<>();
+    private Global global;
+    public static List<File> photosList = new ArrayList<>(),
+            selectedFiles = new ArrayList<>(),
+            videosList = new ArrayList<>(),
+            allFiles = new ArrayList<>();
     private static List<String> allFolderNames = new ArrayList<>();
     private static Map<String, List<File>> allFoldersMap = new HashMap<>();
     boolean spinnerLock = true;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         binding = ActivityMediaBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        global = new Global(this, this);
+
+        //Set window color
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.black_overlay));
 
         //Get folders for spinner
         photosList = com.immo2n.halalife.Custom.Media.getAllImages(this);
@@ -38,6 +53,7 @@ public class Media extends AppCompatActivity {
         //Reset everything
         allFolderNames = new ArrayList<>();
         allFoldersMap = new HashMap<>();
+        selectedFiles = new ArrayList<>();
 
         //Put files
         allFolderNames.add("All files");
@@ -82,7 +98,7 @@ public class Media extends AppCompatActivity {
         binding.fileList.setItemAnimator(null);
 
         //Next time just replace allFiles with wanted file list and than just notify changes
-        MediaAdapter mediaAdapter = new MediaAdapter(allFiles, this);
+        MediaAdapter mediaAdapter = new MediaAdapter(allFiles, this, binding.mediaTitle);
         binding.fileList.setAdapter(mediaAdapter);
 
         binding.folderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -94,7 +110,7 @@ public class Media extends AppCompatActivity {
                     return;
                 }
                 allFiles = allFoldersMap.get(allFolderNames.get(i));
-                MediaAdapter mediaAdapter = new MediaAdapter(allFiles, Media.this);
+                MediaAdapter mediaAdapter = new MediaAdapter(allFiles, Media.this, binding.mediaTitle);
                 binding.fileList.setAdapter(mediaAdapter);
                 mediaAdapter.notifyDataSetChanged();
             }
@@ -104,6 +120,21 @@ public class Media extends AppCompatActivity {
                 //Do none
             }
         });
-
+        binding.next.setOnClickListener(view -> {
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra("files", global.getGson().toJson(new MediaSelectionList(selectedFiles)));
+            setResult(Activity.RESULT_OK, returnIntent);
+            finish();
+        });
+    }
+    @SuppressLint("SetTextI18n")
+    public static void updateCount(TextView title){
+        int s = selectedFiles.size();
+        if(s > 0){
+            title.setText("Selected "+s);
+        }
+        else {
+            title.setText(R.string.media);
+        }
     }
 }

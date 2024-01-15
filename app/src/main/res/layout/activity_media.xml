@@ -10,23 +10,9 @@
         android:elevation="10dp"
         android:layout_width="match_parent"
         android:layout_height="60dp">
-        <RelativeLayout
-            android:foreground="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true"
-            android:id="@+id/back"
-            android:gravity="center"
-            android:layout_width="65dp"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:src="@drawable/close_white"
-                android:layout_width="32dp"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/close" />
-        </RelativeLayout>
         <TextView
             android:id="@+id/mediaTitle"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="20dp"
             android:fontFamily="@font/ubuntu"
             android:textSize="20sp"
             android:textColor="@color/white_robust"

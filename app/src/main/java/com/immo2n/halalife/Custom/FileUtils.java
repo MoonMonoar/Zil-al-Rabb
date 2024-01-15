@@ -1,8 +1,10 @@
 package com.immo2n.halalife.Custom;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.media.MediaMetadataRetriever;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -13,8 +15,44 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.text.DecimalFormat;
+import java.util.Objects;
 
 public class FileUtils {
+    private static final String[] videoFileExtensions = {
+            "mp4", "avi", "mkv", "mov", "wmv", "flv", "3gp", "webm"
+    };
+    public static boolean isVideoFile(File file) {
+        if (file == null || !file.isFile()) {
+            return false;
+        }
+        String fileName = file.getName();
+        int lastDotIndex = fileName.lastIndexOf('.');
+        if (lastDotIndex != -1 && lastDotIndex < fileName.length() - 1) {
+            String fileExtension = fileName.substring(lastDotIndex + 1).toLowerCase();
+            for (String videoExtension : videoFileExtensions) {
+                if (videoExtension.equals(fileExtension)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    @SuppressLint("DefaultLocale")
+    public static String getVideoDuration(String filePath) {
+        try {
+            MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+            retriever.setDataSource(filePath);
+            String mimeType = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_MIMETYPE);
+            if (mimeType != null && mimeType.startsWith("video/")) {
+                long durationMillis = Long.parseLong(Objects.requireNonNull(retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)));
+                return String.format("%02d:%02d:%02d", durationMillis / 3600000, (durationMillis % 3600000) / 60000, (durationMillis % 60000) / 1000);
+            }
+            retriever.release();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "00:00:00";
+    }
     public static String getReadableFileSize(long size) {
         if (size <= 0) {
             return "0 B";

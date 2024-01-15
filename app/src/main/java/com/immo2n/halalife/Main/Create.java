@@ -1,6 +1,7 @@
 package com.immo2n.halalife.Main;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -24,11 +25,16 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.text.HtmlCompat;
 
+import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.Snackbar;
 import com.immo2n.halalife.Custom.Global;
+import com.immo2n.halalife.DataObjects.MediaSelectionList;
 import com.immo2n.halalife.R;
 import com.immo2n.halalife.SubActivity.Media;
 import com.immo2n.halalife.databinding.ActivityCreateBinding;
 
+import java.io.File;
+import java.util.List;
 import java.util.Objects;
 
 public class Create extends AppCompatActivity {
@@ -37,10 +43,9 @@ public class Create extends AppCompatActivity {
 
     //Behaviour flags
     boolean bigText = false;
-    int postMode = 0; //0 = post, 1 = reels
     ImageView mediaImageCachedHolder;
-    int mediaHolderCount = 1;
-    private ActivityResultLauncher<Intent> cropLauncher;
+    int fileGridCount = 1;
+    private ActivityResultLauncher<Intent> cropLauncher, mediaSelectLauncher;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +109,11 @@ public class Create extends AppCompatActivity {
         //Page behavior
         binding.container.setOnClickListener(view -> release_all());
 
+        mediaSelectLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> handleSelectedMedia(result.getResultCode(), result.getData())
+        );
+
         cropLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             //Process the image file
             if (result.getResultCode() == RESULT_OK) {
@@ -120,15 +130,56 @@ public class Create extends AppCompatActivity {
             //Go to the media selector to select files
             if(checkPermission()){
                 //Go to the media activity
-                startActivity(new Intent(Create.this, Media.class));
+                mediaSelectLauncher.launch(new Intent(Create.this, Media.class));
             }
             else {
-                Toast.makeText(this, "Allow file management permission from settings!", Toast.LENGTH_SHORT).show();
+                Snackbar.make(binding.getRoot(), "Allow file management permission from settings!", Snackbar.LENGTH_SHORT).show();
             }
         });
 
         //Permission for all file access
         checkPermission();
+    }
+
+    private void handleSelectedMedia(int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (data != null) {
+                try {
+                    String resultData = data.getStringExtra("files");
+                    MediaSelectionList listOBJ = global.getGson().fromJson(resultData, MediaSelectionList.class);
+                    List<File> fileList = listOBJ.getFileList();
+                    if(fileList.size() > 0){
+                        //Process the files
+                        for(File file:fileList){
+                            ImageView view = mediaImageCachedHolder;
+                            if(fileGridCount%2 == 0){
+                                //New grid
+
+                            }
+                            else {
+                                if(null != view){
+                                    Glide.with(global.getContext())
+                                            .load(file.getAbsolutePath())
+                                            .centerCrop()
+                                            .placeholder(R.drawable.file_placeholder)
+                                            .error(R.drawable.error)
+                                            .into(view);
+                                }
+                            }
+                            fileGridCount++;
+                        }
+                    }
+                    else {
+                        Snackbar.make(binding.getRoot(), "Nothing selected!", Snackbar.LENGTH_SHORT).show();
+                    }
+                }
+                catch (Exception e){
+                    Snackbar.make(binding.getRoot(), "Selection lost!", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+        } else {
+            Snackbar.make(binding.getRoot(), "Selection canceled!", Snackbar.LENGTH_SHORT).show();
+        }
     }
 
     private void publish() {
