@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
+import com.immo2n.halalife.Custom.FileUtils;
 import com.immo2n.halalife.Custom.Global;
 import com.immo2n.halalife.R;
 import com.immo2n.halalife.databinding.ActivityCropImageBinding;
@@ -21,6 +22,7 @@ import java.util.Objects;
 
 public class CropImage extends AppCompatActivity {
     private ActivityCropImageBinding binding;
+    String source = null, destination = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,9 +38,16 @@ public class CropImage extends AppCompatActivity {
 
         Global global = new Global(this, this);
 
-        if(null != b && null != b.getString("path")) {
-            File file = new File(Objects.requireNonNull(b.getString("path")));
-            binding.image.setUri(Uri.fromFile(file));
+        if(null != b && null != b.getString("source") && null != b.getString("destination")) {
+            source = b.getString("source");
+            destination = b.getString("destination");
+            File file = new File(source), destinationFile = new File(destination);
+            if(file.length() > 5000000){ //5 megabyte sample bottleneck
+                binding.image.setBitmap(FileUtils.decodeSampledBitmapFromFile(source, (int) global.getDisplayWidth(), (int) global.getDisplayHeight()));
+            }
+            else {
+                binding.image.setUri(Uri.fromFile(file));
+            }
             binding.CropMain.setOnClickListener(v-> {
                 if(binding.image.isOffFrame()){
                     global.toast("Zoom to fit in!");
@@ -52,21 +61,21 @@ public class CropImage extends AppCompatActivity {
                 @Override
                 public void onSuccess(@NonNull Bitmap bitmap) {
                     try {
-                        FileOutputStream outputStream = new FileOutputStream(file);
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream);
+                        FileOutputStream outputStream = new FileOutputStream(destinationFile);
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 80, outputStream);
                         outputStream.flush();
                         outputStream.close();
-                        goBack(file);
+                        goBack(destinationFile);
                     }
                     catch (Exception e){
-                        //Do nothing
                         goBack(file);
+                        global.toast("Failed to crop!");
                     }
                 }
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    //Do nothing
                     goBack(file);
+                    global.toast("Failed to crop!");
                 }
             });
         }
@@ -78,7 +87,8 @@ public class CropImage extends AppCompatActivity {
     }
     private void goBack(File file){
         Intent resultIntent = new Intent();
-        resultIntent.putExtra("path", file.getAbsolutePath());
+        resultIntent.putExtra("source", source);
+        resultIntent.putExtra("destination", file.getAbsolutePath());
         setResult(RESULT_OK, resultIntent);
         finish();
     }

@@ -45,7 +45,7 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.FileViewHold
         holder.selectedSymbol.setVisibility(View.GONE);
         holder.relativeLayout.setBackground(null);
         //Check if selected already
-        if(Media.selectedFiles.contains(file)){
+        if(Media.selectedFilePaths.contains(file.getAbsolutePath())){
             holder.relativeLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.media_selected));
             holder.selectedSymbol.setVisibility(View.VISIBLE);
         }
@@ -60,15 +60,15 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.FileViewHold
             holder.videoLength.setVisibility(View.VISIBLE);
         }
         holder.relativeLayout.setOnClickListener(view -> {
-            if(Media.selectedFiles.contains(file)){
+            if(Media.selectedFilePaths.contains(file.getAbsolutePath())){
                 //Remove
-                Media.selectedFiles.remove(file);
+                Media.selectedFilePaths.remove(file.getAbsolutePath());
                 holder.relativeLayout.setBackground(null);
                 holder.selectedSymbol.setVisibility(View.GONE);
             }
             else {
                 //Add
-                Media.selectedFiles.add(file);
+                Media.selectedFilePaths.add(file.getAbsolutePath());
                 holder.relativeLayout.setBackground(ContextCompat.getDrawable(context, R.drawable.media_selected));
                 holder.selectedSymbol.setVisibility(View.VISIBLE);
             }

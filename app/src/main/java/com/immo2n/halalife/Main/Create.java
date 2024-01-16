@@ -5,6 +5,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +20,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -30,13 +35,17 @@ import androidx.core.text.HtmlCompat;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
+import com.immo2n.halalife.Custom.FileUtils;
+import com.immo2n.halalife.Custom.FolderUtils;
 import com.immo2n.halalife.Custom.Global;
 import com.immo2n.halalife.DataObjects.MediaSelectionList;
 import com.immo2n.halalife.R;
+import com.immo2n.halalife.SubActivity.CropImage;
 import com.immo2n.halalife.SubActivity.Media;
 import com.immo2n.halalife.databinding.ActivityCreateBinding;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -46,9 +55,16 @@ public class Create extends AppCompatActivity {
 
     //Behaviour flags
     boolean bigText = false;
-    ImageView mediaImageCachedHolder;
+    ImageView mediaImageCachedHolder, cachedCropIcon;
+    TextView cachedVideoTag;
+    RelativeLayout cachedHolderParent;
     int fileGridCount;
     private ActivityResultLauncher<Intent> cropLauncher, mediaSelectLauncher;
+
+    //Main media factory
+    private HashMap<String, File> finalMediaFactory = new HashMap<>();
+    private HashMap<String, RelativeLayout> mediaViewFactory = new HashMap<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +72,15 @@ public class Create extends AppCompatActivity {
         setContentView(binding.getRoot());
         global = new Global(this, this);
         fileGridCount = 1;
+        finalMediaFactory = new HashMap<>();
+        mediaViewFactory = new HashMap<>();
+
+
+
+
+
+
+
 
 
 
@@ -72,6 +97,9 @@ public class Create extends AppCompatActivity {
         binding.privacy.setAdapter(privacyAdapter);
         binding.privacy.setSelection(0);
         mediaImageCachedHolder = binding.firstMediaImage;
+        cachedVideoTag = binding.firstVideoTag;
+        cachedCropIcon = binding.firstCropIcon;
+        cachedHolderParent = binding.holderParent;
 
         //Post text controls
         binding.postText.addTextChangedListener(new TextWatcher() {
@@ -122,8 +150,35 @@ public class Create extends AppCompatActivity {
             if (result.getResultCode() == RESULT_OK) {
                 Intent data = result.getData();
                 if (null != data) {
-                    if (null != data.getStringExtra("path")) {
-                        //processMediaPosts(tempFilePostTarget);
+                    String source = data.getStringExtra("source"), destination = data.getStringExtra("destination");
+                    if (null != source && null != destination) {
+                        //Replace the factory image with the new file with tag
+                        if(finalMediaFactory.containsKey(source)){
+                            finalMediaFactory.put(source, new File(destination));
+                            RelativeLayout parent = mediaViewFactory.get(source);
+                            if(null != parent){
+                                ImageView image = parent.findViewById(R.id.imageLeft);
+                                if(null == image){
+                                    image = parent.findViewById(R.id.imageRight);
+                                }
+                                if(null == image){
+                                    image = parent.findViewById(R.id.firstMediaImage);
+                                }
+                                if(null != image) {
+                                    ImageView finalImage = image;
+                                    global.runOnUI(() -> {
+                                        Bitmap bitmap = BitmapFactory.decodeFile(destination);
+                                        if (bitmap != null) {
+                                            finalImage.setImageBitmap(bitmap);
+                                            parent.setOnClickListener(view1 -> cropCall(source, new File(destination)));
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        Toast.makeText(this, "Data lost!", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -148,38 +203,68 @@ public class Create extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK) {
             if (data != null) {
                 try {
-                    String resultData = data.getStringExtra("files");
+                    String resultData = data.getStringExtra(Media.RESULT_FILES);
                     MediaSelectionList listOBJ = global.getGson().fromJson(resultData, MediaSelectionList.class);
-                    List<File> fileList = listOBJ.getFileList();
+                    List<String> fileList = listOBJ.getFileList();
                     if(fileList.size() > 0){
                         //Process the files
-                        for(File file:fileList){
-                            ImageView view = mediaImageCachedHolder;
-                            if(fileGridCount%2 == 0){
-                                //New grid
-                                @SuppressLint("InflateParams")
-                                View gridParent = getLayoutInflater().inflate(R.layout.create_media_item, null);
-                                ImageView leftImage = gridParent.findViewById(R.id.imageLeft);
-                                Glide.with(global.getContext())
-                                        .load(file.getPath())
-                                        .centerCrop()
-                                        .placeholder(R.drawable.file_placeholder)
-                                        .error(R.drawable.error)
-                                        .into(leftImage);
-                                mediaImageCachedHolder = gridParent.findViewById(R.id.imageRight);
-                                binding.addedMediaList.addView(gridParent);
-                            }
-                            else {
-                                if(null != view){
+                        for(String path:fileList){
+                            File file = new File(path);
+                            if(file.exists()) {
+                                finalMediaFactory.put(path, file);
+                                ImageView view = mediaImageCachedHolder;
+                                if (fileGridCount%2 == 0) {
+                                    //New grid
+                                    @SuppressLint("InflateParams")
+                                    View gridParent = getLayoutInflater().inflate(R.layout.create_media_item, null);
+                                    ImageView leftImage = gridParent.findViewById(R.id.imageLeft);
+                                    TextView videoTag = gridParent.findViewById(R.id.videoTagLeft);
                                     Glide.with(global.getContext())
-                                            .load(file.getPath())
+                                            .load(path)
                                             .centerCrop()
                                             .placeholder(R.drawable.file_placeholder)
                                             .error(R.drawable.error)
-                                            .into(view);
+                                            .into(leftImage);
+                                    mediaImageCachedHolder = gridParent.findViewById(R.id.imageRight);
+                                    cachedCropIcon = gridParent.findViewById(R.id.cropIconRight);
+                                    cachedVideoTag = gridParent.findViewById(R.id.videoTagRight);
+                                    cachedHolderParent = gridParent.findViewById(R.id.holderParentRight);
+
+                                    if(FileUtils.isVideoFile(file)){
+                                        videoTag.setText(FileUtils.getVideoDuration(file.getAbsolutePath()));
+                                        videoTag.setVisibility(View.VISIBLE);
+                                    }
+                                    else {
+                                        gridParent.findViewById(R.id.cropIconLeft).setVisibility(View.VISIBLE);
+                                        gridParent.findViewById(R.id.holderParentLeft).setOnClickListener(view1 -> cropCall(path, file));
+                                    }
+
+                                    binding.addedMediaList.addView(gridParent);
+                                    mediaViewFactory.put(file.getAbsolutePath(), gridParent.findViewById(R.id.holderParentLeft));
                                 }
+                                else {
+                                    if (null != view && null != cachedCropIcon && null != cachedVideoTag && null != cachedHolderParent) {
+                                        mediaViewFactory.put(file.getAbsolutePath(), cachedHolderParent);
+                                        Glide.with(global.getContext())
+                                                .load(path)
+                                                .centerCrop()
+                                                .placeholder(R.drawable.file_placeholder)
+                                                .error(R.drawable.error)
+                                                .into(view);
+
+                                        if(FileUtils.isVideoFile(file)){
+                                            cachedVideoTag.setText(FileUtils.getVideoDuration(file.getAbsolutePath()));
+                                            cachedVideoTag.setVisibility(View.VISIBLE);
+                                        }
+                                        else {
+                                            cachedCropIcon.setVisibility(View.VISIBLE);
+                                            cachedHolderParent.setOnClickListener(view1 -> cropCall(path, file));
+                                        }
+
+                                    }
+                                }
+                                fileGridCount++;
                             }
-                            fileGridCount++;
                         }
                     }
                     else {
@@ -187,12 +272,25 @@ public class Create extends AppCompatActivity {
                     }
                 }
                 catch (Exception e){
-                    Log.d("MOON-CHECK", e.toString());
                     Snackbar.make(binding.getRoot(), "Selection lost!", Snackbar.LENGTH_SHORT).show();
                 }
             }
         } else {
             Snackbar.make(binding.getRoot(), "Selection canceled!", Snackbar.LENGTH_SHORT).show();
+        }
+    }
+
+    private void cropCall(String path, File file) {
+        File tempFile = new File(FolderUtils.getHALALiFEFilterCacheFolderInDCIM(), file.getName());
+        try {
+            cropLauncher.launch(new Intent(Create.this, CropImage.class)
+                    .putExtra("source", path)
+                    .putExtra("destination", tempFile.getAbsolutePath())
+            );
+        }
+        catch (Exception e){
+            Log.d("Moon-test", e.toString());
+            Toast.makeText(this, "Could not copy the file!", Toast.LENGTH_SHORT).show();
         }
     }
 

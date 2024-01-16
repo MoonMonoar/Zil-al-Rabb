@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,10 +28,11 @@ import java.util.List;
 import java.util.Map;
 
 public class Media extends AppCompatActivity {
+    public static String RESULT_FILES = "FILES";
     ActivityMediaBinding binding;
     private Global global;
+    public static List<String> selectedFilePaths = new ArrayList<>();
     public static List<File> photosList = new ArrayList<>(),
-            selectedFiles = new ArrayList<>(),
             videosList = new ArrayList<>(),
             allFiles = new ArrayList<>();
     private static List<String> allFolderNames = new ArrayList<>();
@@ -53,7 +55,8 @@ public class Media extends AppCompatActivity {
         //Reset everything
         allFolderNames = new ArrayList<>();
         allFoldersMap = new HashMap<>();
-        selectedFiles = new ArrayList<>();
+        selectedFilePaths = new ArrayList<>();
+        allFiles = new ArrayList<>();
 
         //Put files
         allFolderNames.add("All files");
@@ -122,14 +125,14 @@ public class Media extends AppCompatActivity {
         });
         binding.next.setOnClickListener(view -> {
             Intent returnIntent = new Intent();
-            returnIntent.putExtra("files", global.getGson().toJson(new MediaSelectionList(selectedFiles)));
+            returnIntent.putExtra(RESULT_FILES, global.getGson().toJson(new MediaSelectionList(selectedFilePaths)));
             setResult(Activity.RESULT_OK, returnIntent);
             finish();
         });
     }
     @SuppressLint("SetTextI18n")
     public static void updateCount(TextView title){
-        int s = selectedFiles.size();
+        int s = selectedFilePaths.size();
         if(s > 0){
             title.setText("Selected "+s);
         }

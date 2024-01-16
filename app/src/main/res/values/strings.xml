@@ -91,6 +91,7 @@
     <string name="add_media">+ Add media</string>
     <string name="close">Close</string>
     <string name="folders">Folders</string>
+    <string name="crop">Crop</string>
     <string-array name="privacy_options">
         <item>Public</item>
         <item>Friends</item>

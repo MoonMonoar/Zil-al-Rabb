@@ -169,12 +169,12 @@ public class FolderUtils {
             return new File(getPhotosFolder().getAbsolutePath()+"/"+FolderUtils.getImageFileName());
         }
     }
-    public static File getNewPhotoAsUploadCache(Context context) {
+    public static File getNewFileAsUploadCache(Context context, File file) {
         File dataFolder = getDataFolder(context);
         File tempFolder = new File(dataFolder, "upload");
         if (!tempFolder.exists()) {
             tempFolder.mkdirs();
         }
-        return new File(tempFolder, getImageFileName());
+        return new File(tempFolder, file.getName());
     }
 }

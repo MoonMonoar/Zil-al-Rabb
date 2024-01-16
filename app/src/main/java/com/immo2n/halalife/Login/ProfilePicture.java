@@ -117,8 +117,10 @@ public class ProfilePicture extends AppCompatActivity {
     private void processImage() {
         if(tempFile.length() > 0){
             try {
-                FileUtils.copyFile(tempFile, tempFileMain);
-                cropLauncher.launch(new Intent(this, CropImage.class).putExtra("path", tempFile.getAbsolutePath()));
+                cropLauncher.launch(new Intent(this, CropImage.class)
+                        .putExtra("source", tempFileMain.getAbsolutePath())
+                        .putExtra("destination", tempFile.getAbsolutePath())
+                );
             }
             catch (Exception e){
                 global.toast("Could not copy file!");

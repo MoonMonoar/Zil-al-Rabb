@@ -4,17 +4,17 @@ import java.io.File;
 import java.util.List;
 
 public class MediaSelectionList {
-    List<File> fileList;
+    List<String> fileList;
 
-    public MediaSelectionList(List<File> fileList) {
+    public MediaSelectionList(List<String> fileList) {
         this.fileList = fileList;
     }
 
-    public List<File> getFileList() {
+    public List<String> getFileList() {
         return fileList;
     }
 
-    public void setFileList(List<File> fileList) {
+    public void setFileList(List<String> fileList) {
         this.fileList = fileList;
     }
 }
