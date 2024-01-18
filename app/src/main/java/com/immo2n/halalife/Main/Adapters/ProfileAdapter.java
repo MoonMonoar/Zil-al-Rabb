@@ -2,9 +2,7 @@ package com.immo2n.halalife.Main.Adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,18 +10,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.immo2n.halalife.Core.AppState;
 import com.immo2n.halalife.Core.Profile;
 import com.immo2n.halalife.Core.Server;
@@ -36,6 +26,8 @@ import com.jsibbold.zoomage.ZoomageView;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -156,11 +148,14 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.GridView
                     shares = view.findViewById(R.id.shareCount),
                     menu = view.findViewById(R.id.menu);
 
-            ZoomageView mediaImage = view.findViewById(R.id.PostImage);
             LinearLayout mediaLoading = view.findViewById(R.id.imageLoading),
                     mediaLoadFailed = view.findViewById(R.id.loadFailed);
             RelativeLayout postBodyHolder = view.findViewById(R.id.postBody),
+                           contentHolder = view.findViewById(R.id.postContent),
+                            mediaBody = view.findViewById(R.id.mediaBody),
                             dpLayer = view.findViewById(R.id.dpLayer);
+
+             contentHolder.removeAllViews(); //Needed
 
             likes.setText(String.format(Locale.getDefault(), "%d", object.getLikes()));
             comments.setText(String.format(Locale.getDefault(), "%d", object.getComments()));
@@ -202,8 +197,81 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.GridView
                     }
                 });
             }
+            else if(object.getType().equals("POST")){
+                if(files.size() > 0) {
+                    View child;
+                    switch (files.size()) {
+                        case 1:
+                            View grid = LayoutInflater.from(context).inflate(R.layout.post_1_image, parent, false);
+                            ZoomageView image = grid.findViewById(R.id.image);
+                            loadMedia.get(Server.getUserAsset(files.get(0)), new LoadMedia.CallBack() {
+                                @Override
+                                public void onDone(File file) {
+                                    global.runOnUI(() -> {
+                                        image.setImageURI(Uri.fromFile(file));
+                                        mediaLoading.setVisibility(View.GONE);
+                                    });
+                                }
+                                @Override
+                                public void onFail(String message) {
+                                    global.runOnUI(() -> {
+                                        mediaLoading.setVisibility(View.GONE);
+                                        mediaLoadFailed.setVisibility(View.VISIBLE);
+                                    });
+                                }
+                            });
+                            child = grid;
+                            break;
+                        case 2:
+                            View grid2 = LayoutInflater.from(context).inflate(R.layout.post_2_image, parent, false);
+                            List<ImageView> views = new ArrayList<>();
+                            views.add(grid2.findViewById(R.id.image1));
+                            views.add(grid2.findViewById(R.id.image2));
+                            populate(files, views, mediaLoading);
+                            child = grid2;
+                            break;
+                        case 3:
+                            View grid3 = LayoutInflater.from(context).inflate(R.layout.post_3_image, parent, false);
+                            List<ImageView> views3 = new ArrayList<>();
+                            views3.add(grid3.findViewById(R.id.image1_3));
+                            views3.add(grid3.findViewById(R.id.image2_3));
+                            views3.add(grid3.findViewById(R.id.image3_3));
+                            populate(files, views3, mediaLoading);
+                            child = grid3;
+                            break;
+                        case 4:
+                            View grid4 = LayoutInflater.from(context).inflate(R.layout.post_4_image, parent, false);
+                            List<ImageView> views4 = new ArrayList<>();
+                            views4.add(grid4.findViewById(R.id.image1_4));
+                            views4.add(grid4.findViewById(R.id.image2_4));
+                            views4.add(grid4.findViewById(R.id.image3_4));
+                            views4.add(grid4.findViewById(R.id.image4_4));
+                            populate(files, views4, mediaLoading);
+                            child = grid4;
+                            break;
+                        default:
+                            //More than 4
+                            View grid4_plus = LayoutInflater.from(context).inflate(R.layout.post_4_plus_image, parent, false);
+                            List<ImageView> views4_plus = new ArrayList<>();
+                            views4_plus.add(grid4_plus.findViewById(R.id.image1_4_plus));
+                            views4_plus.add(grid4_plus.findViewById(R.id.image2_4_plus));
+                            views4_plus.add(grid4_plus.findViewById(R.id.image3_4_plus));
+                            views4_plus.add(grid4_plus.findViewById(R.id.image4_4_plus));
+                            populate(files, views4_plus, mediaLoading);
+                            TextView mode = grid4_plus.findViewById(R.id.more);
+                            mode.setText(MessageFormat.format("+{0}", files.size() - 4));
+                            child = grid4_plus;
+                            break;
+                    }
+                    contentHolder.addView(child);
+                    contentHolder.setVisibility(View.VISIBLE);
+                }
+                else {
+                    mediaBody.setVisibility(View.GONE);
+                }
+            }
 
-            //Post types
+            //Post types -- for body text
             if(null != object.getBody() && !object.getBody().isEmpty()){
                 global.setBoldText(bodyText, postUser.getUsername()+" "+ object.getBody(), postUser.getUsername());
                 postBodyHolder.setVisibility(View.VISIBLE);
@@ -211,6 +279,19 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.GridView
         }
         holder.mainCardBody.addView(view);
         freeLoading(holder);
+    }
+
+    int view_index = 0;
+    private void populate(List<String> files, List<ImageView> views, LinearLayout mediaLoading) {
+        view_index = 0;
+        for(String file : files){
+            Picasso.get().load(Server.getUserAsset(file)).into(views.get(view_index));
+            view_index++;
+            if(view_index >= views.size()){
+                break;
+            }
+        }
+        mediaLoading.setVisibility(View.GONE);
     }
 
     private void freeLoading(GridViewHolder holder){

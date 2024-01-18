@@ -92,6 +92,8 @@
     <string name="close">Close</string>
     <string name="folders">Folders</string>
     <string name="crop">Crop</string>
+    <string name="network_error_occurred">Network error occurred!</string>
+    <string name="cropping_the_images_to_fit_is_a_best_practise_and_will_look_better">Cropping the images to fit is a best practise and will look better!</string>
     <string-array name="privacy_options">
         <item>Public</item>
         <item>Friends</item>

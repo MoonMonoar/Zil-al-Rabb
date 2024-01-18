@@ -3,7 +3,9 @@ package com.immo2n.halalife.Main;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,18 +15,17 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -35,9 +36,11 @@ import androidx.core.text.HtmlCompat;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
+import com.immo2n.halalife.Core.CreatorService;
 import com.immo2n.halalife.Custom.FileUtils;
 import com.immo2n.halalife.Custom.FolderUtils;
 import com.immo2n.halalife.Custom.Global;
+import com.immo2n.halalife.DataObjects.CreatorPayload;
 import com.immo2n.halalife.DataObjects.MediaSelectionList;
 import com.immo2n.halalife.R;
 import com.immo2n.halalife.SubActivity.CropImage;
@@ -45,6 +48,7 @@ import com.immo2n.halalife.SubActivity.Media;
 import com.immo2n.halalife.databinding.ActivityCreateBinding;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -65,6 +69,9 @@ public class Create extends AppCompatActivity {
     private HashMap<String, File> finalMediaFactory = new HashMap<>();
     private HashMap<String, RelativeLayout> mediaViewFactory = new HashMap<>();
 
+    //Mode
+    int mode = 0; //0 = normal post, 1 = Reels
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,18 +81,6 @@ public class Create extends AppCompatActivity {
         fileGridCount = 1;
         finalMediaFactory = new HashMap<>();
         mediaViewFactory = new HashMap<>();
-
-
-
-
-
-
-
-
-
-
-
-
 
         //Page components
         ArrayAdapter<CharSequence> privacyAdapter = ArrayAdapter.createFromResource(
@@ -197,6 +192,22 @@ public class Create extends AppCompatActivity {
 
         //Permission for all file access
         checkPermission();
+
+        //Back press protection
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                new AlertDialog.Builder(global.getContext())
+                        .setTitle("Warning")
+                        .setMessage("Going back will delete your progress. Are you sure?")
+                        .setPositiveButton("Yes, go back", (dialog, which) -> {
+                            FolderUtils.clearCreatorCache();
+                            finish();
+                        })
+                        .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss())
+                        .show();
+            }
+        });
     }
 
     private void handleSelectedMedia(int resultCode, Intent data) {
@@ -233,6 +244,7 @@ public class Create extends AppCompatActivity {
                                     if(FileUtils.isVideoFile(file)){
                                         videoTag.setText(FileUtils.getVideoDuration(file.getAbsolutePath()));
                                         videoTag.setVisibility(View.VISIBLE);
+                                        //Videos do not need processing
                                     }
                                     else {
                                         gridParent.findViewById(R.id.cropIconLeft).setVisibility(View.VISIBLE);
@@ -255,6 +267,7 @@ public class Create extends AppCompatActivity {
                                         if(FileUtils.isVideoFile(file)){
                                             cachedVideoTag.setText(FileUtils.getVideoDuration(file.getAbsolutePath()));
                                             cachedVideoTag.setVisibility(View.VISIBLE);
+                                            //Videos do not need processing
                                         }
                                         else {
                                             cachedCropIcon.setVisibility(View.VISIBLE);
@@ -281,7 +294,7 @@ public class Create extends AppCompatActivity {
     }
 
     private void cropCall(String path, File file) {
-        File tempFile = new File(FolderUtils.getHALALiFEFilterCacheFolderInDCIM(), file.getName());
+        File tempFile = new File(FolderUtils.getHALALiFECreatorCacheFolderInDCIM(), file.getName());
         try {
             cropLauncher.launch(new Intent(Create.this, CropImage.class)
                     .putExtra("source", path)
@@ -289,14 +302,48 @@ public class Create extends AppCompatActivity {
             );
         }
         catch (Exception e){
-            Log.d("Moon-test", e.toString());
             Toast.makeText(this, "Could not copy the file!", Toast.LENGTH_SHORT).show();
         }
     }
 
+    boolean publishEngaged = false;
     private void publish() {
+        if(publishEngaged){
+            Toast.makeText(this, "A moment please...", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        publishEngaged = true;
+        //Create payload
+        List<String> pathList = new ArrayList<>();
+        List<File> files = new ArrayList<>(finalMediaFactory.values());
+        for(File file:files){
+            pathList.add(file.getAbsolutePath());
+        }
+        String body = binding.postText.getText().toString();
 
-
+        //Empty check
+        if(body.isEmpty() && pathList.size() == 0){
+            new AlertDialog.Builder(global.getContext())
+                    .setTitle("Empty post")
+                    .setMessage("Your post is empty! You may continue crating the post.")
+                    .setPositiveButton("Exit", (dialog, which) -> {
+                        FolderUtils.clearCreatorCache();
+                        finish();
+                    })
+                    .setNegativeButton("Continue creating", (dialog, which) -> dialog.dismiss())
+                    .show();
+            publishEngaged = false;
+            return;
+        }
+        String payload = global.getGson().toJson(new CreatorPayload(
+                mode,
+                binding.privacy.getSelectedItemPosition(),
+                pathList,
+                body
+        ));
+        Toast.makeText(this, "Creating post...", Toast.LENGTH_LONG).show();
+        startService(new Intent(this, CreatorService.class).putExtra(CreatorService.PAYLOAD_TAG, payload));
+        finish();
     }
 
     private boolean checkPermission(){

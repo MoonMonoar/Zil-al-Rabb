@@ -29,6 +29,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.gson.Gson;
 import com.immo2n.halalife.R;
+import com.kaopiz.kprogresshud.KProgressHUD;
 
 import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
@@ -256,5 +257,15 @@ public class Global {
             return displayMetrics.widthPixels;
         }
         return 0;
+    }
+
+    public KProgressHUD getProgressHud(KProgressHUD.Style style, String title, String info, boolean cancelable){
+        return new KProgressHUD(context)
+                .setStyle(style)
+                .setLabel(title)
+                .setDetailsLabel(info)
+                .setCancellable(cancelable)
+                .setAnimationSpeed(2)
+                .setDimAmount(0.5f);
     }
 }

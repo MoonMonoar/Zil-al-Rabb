@@ -13,19 +13,6 @@ import java.util.Comparator;
 import java.util.Random;
 
 public class FolderUtils {
-    public static String getCreateCacheFolder(Context context){
-        String folderPath = context.getFilesDir() + "/create_cache";
-        File folder = new File(folderPath);
-        if (!folder.exists()) {
-            if (folder.mkdirs()) {
-                return folderPath;
-            } else {
-                return null;
-            }
-        } else {
-            return folderPath;
-        }
-    }
     public static String getImageFileName(){
         return "HL_" + generateRandomDigits(5) + "_" +System.currentTimeMillis() + ".jpg";
     }
@@ -81,6 +68,21 @@ public class FolderUtils {
             }
         }
     }
+
+    public static void clearCreatorCache(){
+        File directory = new File(getHALALiFECreatorCacheFolderInDCIM().toURI());
+        if (directory.exists() && directory.isDirectory()) {
+            File[] files = directory.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isFile()) {
+                        file.delete();
+                    }
+                }
+            }
+        }
+    }
+
     public static void clearSelectionCache(){
         File directory = new File(getHALALiFEImageSelectionFolderInDCIM().toURI());
         if (directory.exists() && directory.isDirectory()) {
@@ -109,7 +111,7 @@ public class FolderUtils {
     }
     public static File getHALALiFEFolderInDCIM() {
         File dcimFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
-        File HALALiFEFolder = new File(dcimFolder, "HALALiFE");
+        File HALALiFEFolder = new File(dcimFolder, "Zil");
         if (!HALALiFEFolder.exists()) {
             HALALiFEFolder.mkdirs();
         }
@@ -137,6 +139,16 @@ public class FolderUtils {
         }
         return HALALiFEFolder;
     }
+
+    public static File getHALALiFECreatorCacheFolderInDCIM() {
+        File dcimFolder = getHALALiFEFolderInDCIM();
+        File HALALiFEFolder = new File(dcimFolder, ".creator");
+        if (!HALALiFEFolder.exists()) {
+            HALALiFEFolder.mkdirs();
+        }
+        return HALALiFEFolder;
+    }
+
     public static File getHALALiFEImageSelectionFolderInDCIM() {
         File dcimFolder = getHALALiFEFolderInDCIM();
         File HALALiFEFolder = new File(dcimFolder, ".selectedImages");
@@ -147,7 +159,7 @@ public class FolderUtils {
     }
     public static File getPhotosFolder() {
         File photosFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        File HALALiFEFolder = new File(photosFolder, "HALALiFE");
+        File HALALiFEFolder = new File(photosFolder, "Zil");
         if (!HALALiFEFolder.exists()) {
             HALALiFEFolder.mkdirs();
         }
@@ -155,7 +167,7 @@ public class FolderUtils {
     }
     public static File getVideosFolder() {
         File movies = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
-        File HALALiFEFolder = new File(movies, "HALALiFE");
+        File HALALiFEFolder = new File(movies, "Zil");
         if (!HALALiFEFolder.exists()) {
             HALALiFEFolder.mkdirs();
         }

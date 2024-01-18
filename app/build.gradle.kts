@@ -43,6 +43,8 @@ dependencies {
     implementation("com.github.takusemba:cropme:2.0.8")
     implementation("de.hdodenhof:circleimageview:3.1.0")
     implementation("com.jsibbold:zoomage:1.3.1")
+    implementation("com.kaopiz:kprogresshud:1.2.0")
+
 
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")

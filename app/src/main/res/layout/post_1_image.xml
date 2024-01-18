@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.jsibbold.zoomage.ZoomageView
+    android:maxHeight="1350px"
+    android:scaleType="fitCenter"
+    android:id="@+id/image"
+    android:adjustViewBounds="true"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:zoomage_restrictBounds="false"
+    app:zoomage_animateOnReset="true"
+    app:zoomage_autoResetMode="ALWAYS"
+    app:zoomage_autoCenter="true"
+    app:zoomage_doubleTapToZoom="false"
+    app:zoomage_zoomable="true"
+    app:zoomage_translatable="false"
+    app:zoomage_minScale="0.6"
+    app:zoomage_maxScale="8"
+    tools:ignore="PxUsage"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" />

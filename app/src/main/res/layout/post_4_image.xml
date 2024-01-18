@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="1200px"
+    tools:ignore="PxUsage"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:baselineAligned="false">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginEnd="2dp"
+        android:layout_weight="1"
+        android:adjustViewBounds="true"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        tools:ignore="PxUsage">
+
+        <ImageView
+            android:layout_marginBottom="2dp"
+            android:scaleType="centerCrop"
+            android:id="@+id/image1_4"
+            android:adjustViewBounds="true"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:contentDescription="@string/image"
+            tools:ignore="NestedWeights,PxUsage" />
+
+        <ImageView
+            android:contentDescription="@string/image"
+            android:layout_marginTop="2dp"
+            android:scaleType="centerCrop"
+            android:id="@+id/image2_4"
+            android:adjustViewBounds="true"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginStart="2dp"
+        android:layout_weight="1"
+        android:adjustViewBounds="true"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        tools:ignore="PxUsage">
+
+        <ImageView
+            android:layout_marginBottom="2dp"
+            android:scaleType="centerCrop"
+            android:id="@+id/image3_4"
+            android:adjustViewBounds="true"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:contentDescription="@string/image"
+            tools:ignore="NestedWeights,PxUsage" />
+
+        <ImageView
+            android:layout_marginTop="2dp"
+            android:contentDescription="@string/image"
+            android:scaleType="centerCrop"
+            android:id="@+id/image4_4"
+            android:adjustViewBounds="true"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            tools:ignore="PxUsage" />
+
+    </LinearLayout>
+</LinearLayout>

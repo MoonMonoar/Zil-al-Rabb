@@ -62,7 +62,7 @@ public class CropImage extends AppCompatActivity {
                 public void onSuccess(@NonNull Bitmap bitmap) {
                     try {
                         FileOutputStream outputStream = new FileOutputStream(destinationFile);
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 80, outputStream);
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 90, outputStream);
                         outputStream.flush();
                         outputStream.close();
                         goBack(destinationFile);

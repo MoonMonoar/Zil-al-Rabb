@@ -4,8 +4,6 @@ import static com.immo2n.halalife.Core.FileUploader.uploadFile;
 
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.immo2n.halalife.Custom.Global;
 import com.immo2n.halalife.Custom.Net;
@@ -20,10 +18,11 @@ public class Server {
     public static final String REASON_UPLOAD_DP = "DP",
             REASON_UPLOAD_FACE = "FACE";
     public static int uploader_index;
-    public static String apiEndPoint = "http://192.168.248.54"; //Main api end point
+    public static String apiEndPoint = "http://192.168.0.103"; //Main api end point
     public static String
             routeSignup = apiEndPoint+"/api/signup.php",
             routeGetProfile = apiEndPoint+"/api/getProfile.php",
+            routeCreatePost = apiEndPoint+"/api/createPost.php",
             routeUploadFile = apiEndPoint+"/api/upload.php",
             routeGetPosts = apiEndPoint+"/api/getPosts.php",
             routeDPupdate = apiEndPoint+"/api/saveProfilePicture.php",
@@ -38,6 +37,7 @@ public class Server {
     public static String getUserAsset(String fileName){
         return routeUserAssets+fileName;
     }
+
     public String getApiEndPoint() {
         return apiEndPoint;
     }

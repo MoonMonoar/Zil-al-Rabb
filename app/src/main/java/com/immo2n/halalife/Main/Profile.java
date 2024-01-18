@@ -2,9 +2,7 @@ package com.immo2n.halalife.Main;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -21,13 +19,13 @@ import com.immo2n.halalife.databinding.ActivityProfileBinding;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Profile extends AppCompatActivity {
     ActivityProfileBinding binding;
     Global global;
     AppState appState;
     Server server;
-    ProfileAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,9 +56,8 @@ public class Profile extends AppCompatActivity {
                     gridsList.add(new ProfileGrid(appState, false, object));
                 }
                 //Notify
-                if(null != adapter) {
-                    adapter.notifyDataSetChanged();
-                }
+                binding.mainView.setAdapter(new ProfileAdapter(global.getContext(), global.getActivity(), gridsList, appState.getProfile()));
+                Objects.requireNonNull(binding.mainView.getAdapter()).notifyDataSetChanged();
             }
             @Override
             public void onFail(String message) {
@@ -72,6 +69,7 @@ public class Profile extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         binding.mainView.setLayoutManager(layoutManager);
         //Pass own profile - for the user, pass the other profile
-        binding.mainView.setAdapter(adapter = new ProfileAdapter(this, this, gridsList, appState.getProfile()));
+        binding.mainView.setAdapter(new ProfileAdapter(this, this, gridsList, appState.getProfile()));
+        //new LinearSnapHelper().attachToRecyclerView(binding.mainView); //Focus to current item - magical
     }
 }

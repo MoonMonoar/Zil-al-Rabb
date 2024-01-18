@@ -35,4 +35,5 @@
     <color name="button_reels">#A110BA</color>
     <color name="textarea_border">#818181</color>
     <color name="page_gap">#DCDCDC</color>
+    <color name="post_overlay">#66000000</color>
 </resources>

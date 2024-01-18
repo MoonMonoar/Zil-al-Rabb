@@ -100,23 +100,13 @@
 
         </RelativeLayout>
 
-        <com.jsibbold.zoomage.ZoomageView
+        <RelativeLayout
             android:visibility="gone"
             android:maxHeight="1350px"
-            android:scaleType="fitCenter"
-            android:id="@+id/PostImage"
+            android:id="@+id/postContent"
             android:adjustViewBounds="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:zoomage_restrictBounds="false"
-            app:zoomage_animateOnReset="true"
-            app:zoomage_autoResetMode="ALWAYS"
-            app:zoomage_autoCenter="true"
-            app:zoomage_doubleTapToZoom="false"
-            app:zoomage_zoomable="true"
-            app:zoomage_translatable="false"
-            app:zoomage_minScale="0.6"
-            app:zoomage_maxScale="8"
             tools:ignore="PxUsage" />
 
         <LinearLayout
@@ -141,7 +131,7 @@
                 android:layout_marginTop="15dp"
                 android:fontFamily="@font/ubuntu"
                 android:textSize="15sp"
-                android:text="Network error occured!"
+                android:text="@string/network_error_occurred"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
@@ -161,6 +151,7 @@
         </LinearLayout>
 
     </RelativeLayout>
+
     <LinearLayout
         android:paddingTop="5dp"
         android:paddingBottom="20dp"

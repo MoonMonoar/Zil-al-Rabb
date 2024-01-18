@@ -9,6 +9,7 @@
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <uses-feature android:name="android.hardware.camera.any" />
 
@@ -39,8 +40,9 @@
         <activity
             android:name=".Main.Create"
             android:exported="false" />
-        <activity
-            android:name=".SubActivity.ProfilePictureCropper"
+        <service
+            android:name=".Core.CreatorService"
+            android:enabled="true"
             android:exported="false" />
         <activity
             android:name=".Main.Profile"

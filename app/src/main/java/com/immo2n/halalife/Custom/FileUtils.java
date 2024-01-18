@@ -3,7 +3,6 @@ package com.immo2n.halalife.Custom;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.media.MediaMetadataRetriever;
 
 import java.io.ByteArrayOutputStream;
@@ -11,9 +10,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.file.Files;
 import java.text.DecimalFormat;
 import java.util.Objects;
 
@@ -70,19 +66,19 @@ public class FileUtils {
         try {
             Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            int maxFileSizeKB = 450; // Maximum target file size in KB
+            int maxFileSizeKB = 1000; // Maximum target file size in KB
             int compressionQuality = 90; // Initial compression quality
             if(!imageFile.getAbsolutePath().equals(destination.getAbsolutePath())) {
                 copyFile(imageFile, destination);
             }
             while (destination.length() / 1024 > maxFileSizeKB && compressionQuality > 0) {
                 byteArrayOutputStream.reset(); // Clear the stream for the next compression
-                bitmap.compress(Bitmap.CompressFormat.JPEG, compressionQuality, byteArrayOutputStream);
+                bitmap.compress(Bitmap.CompressFormat.PNG, compressionQuality, byteArrayOutputStream);
                 FileOutputStream fos = new FileOutputStream(destination);
                 fos.write(byteArrayOutputStream.toByteArray());
                 fos.flush();
                 fos.close();
-                compressionQuality -= 10; // Decrease the compression quality
+                compressionQuality -= 5; // Decrease the compression quality
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -120,4 +116,9 @@ public class FileUtils {
         return inSampleSize;
     }
 
+    public interface CompressVideoCallback {
+        void onSuccess(File source, File destination);
+        void onCancelled();
+        void onError(String message);
+    }
 }
